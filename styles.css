@@ -30,8 +30,8 @@
 .card-face strong,.card-face em{position:absolute;left:10px;right:10px;z-index:3;text-shadow:0 2px 8px #000}
 .card-face strong{bottom:30px;font-size:17px;color:#fff}
 .card-face em{bottom:10px}
-.card-flip.is-reversed .card-face{transform:rotate(180deg)}
-.card-flip.is-reversed .card-face .tarot-art{transform:rotate(180deg)}
+.card-flip.is-reversed .card-face{transform:rotateY(180deg) rotate(180deg)}
+
 .card-info{position:relative;z-index:4;background:#0d0a13;padding:12px 4px 8px;border-radius:0 0 12px 12px}
 .card-info strong{display:block;white-space:normal;overflow-wrap:anywhere;line-height:1.35}
 .detail-card{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center}
