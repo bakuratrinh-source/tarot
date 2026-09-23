@@ -43,3 +43,22 @@ radial-gradient(circle at 75% 20%,#fff 0 1px,transparent 2px),radial-gradient(ci
 
 @media(max-width:1050px){.arcana-app{grid-template-columns:76px 1fr}.sidebar{padding:20px 9px}.brand strong,.brand small{display:none}.nav-item{font-size:0;justify-content:center}.nav-item span{font-size:18px}.sidebar-quote{display:none}.reading-layout{grid-template-columns:1fr}.control-grid{grid-template-columns:1fr}.start-btn{min-height:55px}.overview-panel{min-height:auto}}
 @media(max-width:700px){.arcana-app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:17px}.topbar{align-items:flex-start;flex-direction:column}.deck-badge{width:100%;min-width:0}.progress{overflow:auto;white-space:nowrap}.spread-grid{grid-template-columns:1fr}.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.cards-grid.cards-count-1{grid-template-columns:minmax(180px,280px)}.section-head{align-items:flex-start;flex-direction:column}.reading-actions{grid-template-columns:1fr}.result-meta{width:100%;justify-content:space-between}.card-info strong{font-size:17px}.moon{right:12%;width:75px;height:75px}.hero-copy .eyebrow{font-size:7px}}
+
+.nav-item{border:0;font-family:inherit;background:transparent;width:100%;cursor:pointer;text-align:left}
+.arcana-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
+.arcana-modal.hidden{display:none!important}
+.modal-backdrop{position:absolute;inset:0;background:#05030bbd;backdrop-filter:blur(8px)}
+.modal-card{position:relative;width:min(620px,94vw);max-height:82vh;overflow:auto;border:1px solid #76508f;border-radius:18px;background:linear-gradient(145deg,#1a0e2b,#0c0715);box-shadow:0 25px 90px #000c,0 0 45px #9c55ff22;padding:25px}
+.modal-close{position:absolute;right:15px;top:11px;width:34px;height:34px;border:1px solid #5c3b73;border-radius:50%;background:#140b20;color:#e8d9f2;font-size:23px;cursor:pointer}
+.modal-card h2{font:600 32px "Cormorant Garamond",serif;color:#f0dfc1;margin:7px 0 18px}
+.modal-card p,.modal-card li{font-size:11px;line-height:1.7;color:#b9a9c5}
+.modal-card ul{padding-left:20px}
+.history-list{display:grid;gap:9px}
+.history-item{padding:13px;border:1px solid #3d294f;border-radius:11px;background:#120a1e;cursor:pointer}
+.history-item:hover{border-color:#a963ef;background:#1b0f2c}
+.history-item strong{display:block;color:#e9d8f0;font-size:11px}
+.history-item small{display:block;color:#897b95;font-size:8px;margin-top:4px}
+.history-empty{padding:20px;text-align:center;border:1px dashed #4a3262;border-radius:12px;color:#8e819a;font-size:10px}
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:13px 0;border-bottom:1px solid #332144;color:#cfc0d9;font-size:11px}
+.setting-row:last-child{border-bottom:0}
+.setting-row input{accent-color:#a45cff}
