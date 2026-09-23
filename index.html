@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarot — Guided Reading</title>
+  <meta name="description" content="Ứng dụng trải bài Tarot theo quy trình xem bài thực tế.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div><span class="eyebrow">TAROT READING</span><h1>Phòng Trải Bài</h1></div>
+      <button id="resetBtn" class="ghost-btn" type="button">Bắt đầu lại</button>
+    </header>
+
+    <section class="panel hero-panel">
+      <div class="hero-copy">
+        <span class="step-label">01 · Bộ bài</span>
+        <h2>Chọn một bộ bài trước khi bắt đầu</h2>
+        <p>Luồng trải bài được tách khỏi dữ liệu bộ bài để sau này thay artwork và metadata mà không phải viết lại giao diện.</p>
+      </div>
+      <div id="deckGrid" class="deck-grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><span class="step-label">02 · Câu hỏi</span><h2>Đặt câu hỏi</h2></div></div>
+      <textarea id="questionInput" rows="4" placeholder="Ví dụ: Công việc và hướng đi kinh doanh của tôi trong 3 tháng tới nên tập trung vào điều gì?"></textarea>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><span class="step-label">03 · Trải bài</span><h2>Chọn kiểu trải bài</h2></div></div>
+      <div id="spreadGrid" class="spread-grid"></div>
+    </section>
+
+    <section class="panel action-panel">
+      <div><span class="step-label">04 · Rút bài</span><p class="muted">Xáo ngẫu nhiên và ghi nhận trạng thái xuôi/ngược cho từng lá.</p></div>
+      <button id="drawBtn" class="primary-btn" type="button">Xáo bài &amp; rút bài</button>
+    </section>
+
+    <section id="readingSection" class="panel reading-panel hidden">
+      <div class="section-head"><div><span class="step-label">05 · Kết quả</span><h2>Trải bài của bạn</h2></div><span id="readingMeta" class="muted"></span></div>
+      <div id="cardsGrid" class="cards-grid"></div>
+      <div id="summaryPanel" class="summary-panel hidden">
+        <div class="section-head"><div><span class="step-label">06 · Tổng hợp</span><h2>Tóm tắt phiên trải bài</h2></div><button id="copyBtn" class="secondary-btn" type="button">Copy nội dung</button></div>
+        <pre id="summaryText"></pre>
+      </div>
+    </section>
+
+    <footer>Tarot MVP · Dữ liệu trải bài chỉ mang tính tham khảo và chiêm nghiệm.</footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
