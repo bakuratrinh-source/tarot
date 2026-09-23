@@ -166,11 +166,11 @@ function cardCode(card){
 }
 function cardImage(card){
   const code=cardCode(card);
-  return "https://raw.githubusercontent.com/sixseeds/tarot-api/master/cards/"+code+".jpg";
+  return "https://cdn.jsdelivr.net/gh/sixseeds/tarot-api@main/cards/"+code+".jpg";
 }
 function cardImageFallback(card){
   const code=cardCode(card);
-  return "https://petaloverflow.github.io/tarot-api/cards/"+code+".jpg";
+  return "https://raw.githubusercontent.com/sixseeds/tarot-api/main/cards/"+code+".jpg";
 }
 
 function renderReading(){
