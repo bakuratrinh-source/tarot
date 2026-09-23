@@ -65,8 +65,30 @@
 </section>
 
 <section id="drawTable" class="draw-stage hidden">
-  <div class="section-head"><div><span class="eyebrow">CHAPTER II</span><h2>Rút bài</h2><p>Chọn theo cảm nhận đầu tiên, không cần phân tích quá sớm.</p></div><span id="selectionStatus" class="status-pill">0 lá</span></div>
-  <div id="deckFan" class="deck-fan"></div>
+  <div class="draw-context">
+    <div class="draw-question"><span>✎</span><div><small>CÂU HỎI CỦA BẠN</small><strong id="drawQuestion">—</strong></div><button id="editQuestionBtn" type="button">Chỉnh sửa</button></div>
+    <div class="draw-spread"><span class="spread-mini-icon">✦</span><div><small>KIỂU TRẢI</small><strong id="drawSpread">3 Lá</strong><em id="drawSpreadSub">Quá khứ · Hiện tại · Tương lai</em></div></div>
+  </div>
+  <div class="shuffle-stage" id="shuffleStage">
+    <div class="shuffle-heading">
+      <span class="eyebrow">CHAPTER II · THE RITUAL</span>
+      <h2>✦ &nbsp; XÁO BÀI</h2>
+      <p id="shuffleHint">Hãy tập trung vào câu hỏi của bạn, mình sẽ xáo bộ bài để kết nối năng lượng...</p>
+    </div>
+    <div class="ritual-table">
+      <div class="ritual-stars"></div>
+      <div class="ritual-object object-left">◉</div><div class="ritual-object object-right">✦</div>
+      <div class="shuffle-stack" id="shuffleStack" aria-hidden="true"></div>
+      <div id="deckFan" class="deck-fan"></div>
+      <div class="pick-prompt"><span>∞</span><strong id="pickPrompt">Đang xáo bài...</strong><small>Hãy lắng nghe trực giác và chạm vào lá bài bạn muốn chọn.</small></div>
+    </div>
+    <div class="draw-controls">
+      <button id="reshuffleBtn" type="button">⟳ &nbsp; Xáo lại</button>
+      <button id="randomPickBtn" type="button">⤨ &nbsp; Chọn ngẫu nhiên</button>
+      <button id="cancelDrawBtn" type="button">× &nbsp; Hủy</button>
+    </div>
+  </div>
+  <div class="draw-status-line"><span id="selectionStatus" class="status-pill">0 / 3</span><span id="selectionMessage">Đang chuẩn bị bộ bài...</span></div>
 </section>
 
 <section id="readingSection" class="result-section hidden">
