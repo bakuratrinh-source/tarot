@@ -63,9 +63,9 @@ function renderReading(){
   els.summaryText.textContent=buildSummary();
   const deck=decks.find(x=>x.id===state.deckId);
   const payload=buildReadingPayload({question:state.question,deck,spread,cards:state.drawn});
-  els.aiPrompt.textContent=buildAiPrompt(payload);
-  els.aiPrompt.classList.remove("hidden");
-  els.copyPromptBtn.classList.remove("hidden");
+
+
+
   els.readingSection.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
@@ -87,6 +87,5 @@ function buildSummary(payload){
 
 els.drawBtn.addEventListener("click",drawCards);
 els.resetBtn.addEventListener("click",()=>{state.question="";state.drawn=[];els.questionInput.value="";els.readingSection.classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});});
-els.copyPromptBtn.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.aiPrompt.textContent);els.copyPromptBtn.textContent="Đã copy prompt ✓";setTimeout(()=>els.copyPromptBtn.textContent="Copy prompt AI",1300);});
 els.copyBtn2.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.summaryText.textContent);els.copyBtn.textContent="Đã copy ✓";setTimeout(()=>els.copyBtn.textContent="Copy nội dung",1300);});
 renderDecks(); renderSpreads();
