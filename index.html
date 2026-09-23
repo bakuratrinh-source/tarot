@@ -79,7 +79,13 @@
       <div class="ritual-stars"></div>
       <div class="ritual-object object-left">◉</div><div class="ritual-object object-right">✦</div>
       <div class="shuffle-stack" id="shuffleStack" aria-hidden="true"></div>
-      <div id="deckFan" class="deck-fan"></div>
+      <div class="shuffle-progress"><div id="shuffleProgressBar"></div></div>
+      <div class="deck-carousel">
+        <button class="carousel-arrow carousel-prev" id="carouselPrev" type="button" aria-label="Xem các lá bài trước">‹</button>
+        <div id="deckFan" class="deck-fan" aria-label="78 lá bài Rider Waite"></div>
+        <button class="carousel-arrow carousel-next" id="carouselNext" type="button" aria-label="Xem các lá bài tiếp theo">›</button>
+      </div>
+      <div class="drag-hint"><span>↔</span> Kéo ngang để xem đủ 78 lá bài <span>↔</span></div>
       <div class="pick-prompt"><span>∞</span><strong id="pickPrompt">Đang xáo bài...</strong><small>Hãy lắng nghe trực giác và chạm vào lá bài bạn muốn chọn.</small></div>
     </div>
     <div class="draw-controls">
