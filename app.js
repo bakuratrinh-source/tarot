@@ -173,6 +173,14 @@ function cardImageFallback(card){
   return "https://raw.githubusercontent.com/sixseeds/tarot-api/main/cards/"+code+".jpg";
 }
 
+function renderAllDetails(){
+  els.detail.classList.remove("hidden");
+  els.detail.innerHTML='<div class="all-details-head"><div><div class="detail-kicker">06 · CHI TIẾT CÁC LÁ</div><h3>Thông tin từng lá</h3></div><span class="muted">Có thể bấm vào lá bài để xem riêng</span></div><div class="details-list">'+state.drawn.map((c,i)=>{
+    const info=getCardInfo(c);
+    return '<article class="detail-item"><img src="'+cardImage(c)+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" class="detail-thumb" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\'}"><div><div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p><b>Từ khóa:</b> '+(c.reversed?info.reversed:info.keywords)+'</p><p><b>Đối chiếu:</b> '+(c.reversed?info.keywords:info.reversed)+'</p><p><b>Nguyên tố / số:</b> '+info.element+' · '+info.number+'</p><p><b>Gợi ý:</b> '+info.advice+'</p></div></article>';
+  }).join("")+'</div>';
+}
+
 function renderReading(){
   els.reading.classList.remove("hidden");
   els.summaryPanel = els.summaryPanel || document.querySelector("#summaryPanel");
@@ -190,6 +198,7 @@ function renderReading(){
     state.drawn[i].revealed=true;
     showDetail(i);
   });
+  renderAllDetails();
   els.summary.textContent=makeSummary();
   els.reading.scrollIntoView({behavior:"smooth",block:"start"});
 }
