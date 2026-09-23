@@ -1,1 +1,93 @@
-<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Arcana — Tarot Reading</title><meta name="description" content="Không gian trải bài Tarot theo quy trình chiêm nghiệm có hướng dẫn."><link rel="stylesheet" href="./styles.css"></head><body><main class="app-shell"><header class="topbar"><div class="brand"><span class="eyebrow">ARCANA</span><h1>Phòng Trải Bài</h1></div><button id="resetBtn" class="ghost-btn" type="button">Bắt đầu lại</button></header><section class="panel hero-panel"><div class="hero-copy"><span class="step-label">01 · Bộ bài</span><h2>Một câu hỏi. Một khoảng lặng. Một trải bài.</h2><p>Đặt điều bạn thực sự muốn nhìn rõ, chọn kiểu trải bài và để từng lá mở ra theo nhịp của phiên trải.</p><div class="hero-meta"><span class="gold-dot"></span><span>Rider–Waite–Smith · 78 lá</span></div></div><div id="deckGrid" class="deck-grid"></div></section><section class="panel"><div class="section-head"><div><span class="step-label">02 · Câu hỏi</span><h2>Đặt câu hỏi</h2></div><span class="muted">Một câu hỏi rõ · một trọng tâm</span></div><textarea id="questionInput" rows="4" maxlength="500" placeholder="Ví dụ: Công việc và hướng đi kinh doanh của tôi trong 3 tháng tới nên tập trung vào điều gì?"></textarea></section><section class="panel"><div class="section-head"><div><span class="step-label">03 · Trải bài</span><h2>Chọn kiểu trải bài</h2></div></div><div id="spreadGrid" class="spread-grid"></div></section><section class="panel action-panel"><div><span class="step-label">04 · Bắt đầu</span><p class="muted">Xáo bài ngẫu nhiên và ghi nhận trạng thái xuôi / ngược.</p></div><button id="drawBtn" class="primary-btn" type="button">Bắt đầu trải bài <span>→</span></button></section><section id="drawTable" class="panel draw-table hidden"><div class="section-head"><div><span class="step-label">05 · Chọn lá</span><h2>Chọn từng lá bài</h2></div><span id="selectionStatus" class="status-pill">0 lá đã chọn</span></div><p class="draw-hint">Tập trung vào vị trí đang được hỏi, sau đó chọn theo cảm nhận đầu tiên.</p><div id="deckFan" class="deck-fan"></div></section><section id="readingSection" class="panel reading-panel hidden"><div class="section-head"><div><span class="step-label">06 · Kết quả</span><h2>Trải bài của bạn</h2><p class="reading-subtitle">Nhìn từng lá trong vị trí của nó, rồi nhìn cả câu chuyện.</p></div><span id="readingMeta" class="status-pill"></span></div><div id="cardsGrid" class="cards-grid"></div><div id="detailPanel" class="detail-panel hidden"></div><div id="summaryPanel" class="summary-panel hidden"><div class="section-head"><div><span class="step-label">07 · Tổng hợp</span><h2>Reading Brief</h2></div><button id="copyBtn" class="secondary-btn" type="button">Copy nội dung</button></div><p class="summary-intro">Bản tổng hợp đã được cấu trúc để bạn đưa sang AI và yêu cầu diễn giải sâu hơn.</p><pre id="summaryText"></pre></div></section><footer>Tarot được dùng như công cụ chiêm nghiệm và tham khảo, không phải lời khẳng định chắc chắn về tương lai.</footer></main><script src="./app.js"></script></body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCANA — Tarot Studio</title>
+<meta name="description" content="Không gian trải bài Tarot tối giản, giàu tính chiêm nghiệm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="grain"></div>
+<main class="studio">
+  <aside class="sidebar">
+    <div class="logo-mark">A</div>
+    <div class="brand-lockup"><span>ARCANA</span><small>Tarot Studio</small></div>
+    <nav>
+      <a class="nav-item active"><i>01</i><span>Phiên trải</span></a>
+      <a class="nav-item"><i>02</i><span>Bộ bài</span></a>
+      <a class="nav-item"><i>03</i><span>Ghi chú</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="moon">☾</div>
+      <p>Tarot là một không gian để quan sát bản thân, không phải lời tiên tri chắc chắn.</p>
+    </div>
+  </aside>
+
+  <section class="workspace">
+    <header class="workspace-header">
+      <div><span class="overline">PRIVATE READING ROOM · 2026</span><h1>Phòng Trải Bài</h1></div>
+      <button id="resetBtn" class="reset-link" type="button">↻ Phiên mới</button>
+    </header>
+
+    <section class="intro">
+      <div class="intro-copy">
+        <span class="chapter">CHAPTER I</span>
+        <h2>Một câu hỏi<br><em>một khoảng lặng.</em></h2>
+        <p>Trước khi rút bài, hãy đặt câu hỏi theo cách bạn thật sự muốn nhìn vào nó.</p>
+      </div>
+      <div class="constellation"><span>✦</span><b>ARCANA</b><small>RIDER–WAITE–SMITH · 78</small></div>
+    </section>
+
+    <section class="reading-setup">
+      <div class="setup-card question-card">
+        <div class="card-heading"><span>01</span><div><b>Câu hỏi</b><small>Điều bạn muốn nhìn rõ</small></div></div>
+        <textarea id="questionInput" rows="5" maxlength="500" placeholder="Viết câu hỏi của bạn ở đây…"></textarea>
+        <div class="field-footer"><span>0 / 500</span><span>Hãy giữ một trọng tâm</span></div>
+      </div>
+
+      <div class="setup-card">
+        <div class="card-heading"><span>02</span><div><b>Kiểu trải</b><small>Chọn cấu trúc phù hợp</small></div></div>
+        <div id="spreadGrid" class="spread-grid"></div>
+      </div>
+    </section>
+
+    <section class="deck-section">
+      <div class="section-title">
+        <div><span class="chapter">CHAPTER II</span><h2>Chọn bộ bài</h2></div>
+        <span class="quiet">Một bộ bài · Một phiên đọc</span>
+      </div>
+      <div id="deckGrid" class="deck-grid"></div>
+    </section>
+
+    <section class="start-strip">
+      <div><span class="chapter">READY WHEN YOU ARE</span><p>Xáo 78 lá và bắt đầu một phiên trải mới.</p></div>
+      <button id="drawBtn" class="start-btn" type="button"><span>Bắt đầu trải</span><b>↗</b></button>
+    </section>
+
+    <section id="drawTable" class="draw-stage hidden">
+      <div class="stage-header"><div><span class="chapter">CHAPTER III</span><h2>Chọn những lá bài gọi bạn</h2></div><span id="selectionStatus" class="status-pill">0 lá đã chọn</span></div>
+      <p class="stage-note">Đừng phân tích quá sớm. Chọn theo ấn tượng đầu tiên.</p>
+      <div id="deckFan" class="deck-fan"></div>
+    </section>
+
+    <section id="readingSection" class="result-stage hidden">
+      <div class="result-header"><div><span class="chapter">THE READING</span><h2>Câu chuyện hiện ra</h2><p>Nhìn từng vị trí, sau đó nhìn mối liên hệ giữa toàn bộ trải bài.</p></div><span id="readingMeta" class="status-pill"></span></div>
+      <div id="cardsGrid" class="cards-grid"></div>
+      <div id="detailPanel" class="detail-panel hidden"></div>
+      <div id="summaryPanel" class="summary-panel hidden">
+        <div class="summary-head"><div><span class="chapter">READING BRIEF</span><h2>Bản tổng hợp</h2></div><button id="copyBtn" class="copy-btn" type="button">Copy ↗</button></div>
+        <p>Bản này được cấu trúc để bạn có thể đưa sang AI và yêu cầu diễn giải sâu hơn.</p>
+        <pre id="summaryText"></pre>
+      </div>
+    </section>
+
+    <footer><span>ARCANA</span> · Tarot như công cụ chiêm nghiệm và tham khảo.</footer>
+  </section>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
