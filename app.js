@@ -51,7 +51,16 @@ function buildShuffleTable(pool,spread,animate=true){
     const delay=(i%13)*0.018;
     return '<button class="fan-card ritual-card" data-i="'+i+'" style="--i:'+i+';--spread-x:'+spreadX+'px;--shuffle-x:'+shuffleX+'px;--shuffle-r:'+shuffleR+'deg;--delay:'+delay+'s" type="button" aria-label="Lá bài '+(i+1)+'"></button>';
   }).join("");
-  els.fan.querySelectorAll(".fan-card").forEach((b,i)=>b.onclick=()=>pickCard(b,activePool[i],spread));
+  els.fan.querySelectorAll(".fan-card").forEach((b,i)=>{
+    b.addEventListener("click",e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      if(b.disabled)return;
+      const selectedCard=activePool[i];
+      if(!selectedCard)return;
+      pickCard(b,selectedCard,spread);
+    });
+  });
   const stage=$("#shuffleStage");
   stage?.classList.remove("ritual-ready");
   window.requestAnimationFrame(()=>{
@@ -365,19 +374,17 @@ function setupCardCarousel(){
     if(moved)fan.scrollLeft=startScroll-dx;
   });
 
-  const endDrag=()=>{
-    if(!dragging)return;
+  fan.addEventListener("pointerup",()=>{
     dragging=false;
     fan.classList.remove("is-dragging");
-  };
+  });
+  fan.addEventListener("pointercancel",()=>{
+    dragging=false;
+    fan.classList.remove("is-dragging");
+  });
 
-  fan.addEventListener("pointerup",endDrag);
-  fan.addEventListener("pointercancel",endDrag);
-  fan.addEventListener("pointerleave",()=>{if(dragging&&moved)endDrag()});
-
-  // If the user actually dragged, cancel the synthetic click.
-  // A normal click is left completely untouched so each card's own
-  // onclick handler in buildShuffleTable() can select it reliably.
+  // Never block a normal card click. Only suppress the synthetic click
+  // generated after an actual drag.
   fan.addEventListener("click",e=>{
     if(moved){
       e.preventDefault();
