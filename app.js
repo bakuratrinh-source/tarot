@@ -161,7 +161,7 @@ function cardCode(card){
     return "ar"+String(n).padStart(2,"0");
   }
   const rank=card.name.split(" ")[0];
-  const rankCode={Ace:"ac",Page:"pa",Knight:"kn",Queen:"qu",King:"ki"}[rank] || String(Number(rank)).padStart(2,"0");
+  const rankCode={Ace:"01",Page:"11",Knight:"12",Queen:"13",King:"14"}[rank] || String(Number(rank)).padStart(2,"0");
   return suitCode[card.suit]+rankCode;
 }
 function cardImage(card){
@@ -187,6 +187,7 @@ function renderReading(){
   if(els.summaryPanel) els.summaryPanel.classList.remove("hidden");
   const spread=spreads.find(s=>s.id===state.spreadId);
   els.readingMeta.textContent=state.drawn.length+" lá · "+spread.name;
+  els.cards.className="cards-grid cards-count-"+state.drawn.length;
   els.cards.innerHTML=state.drawn.map((c,i)=>{
     const info=getCardInfo(c);
     const src=cardImage(c);

@@ -44,3 +44,8 @@
 .all-details-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.details-list{display:grid;gap:12px}.detail-item{display:grid;grid-template-columns:90px 1fr;gap:16px;padding:14px;border:1px solid rgba(216,180,254,.1);border-radius:16px;background:#100c17}.detail-thumb{width:90px;aspect-ratio:2/3;object-fit:cover;border-radius:9px}.detail-item h3{font:22px Georgia,serif;margin:5px 0 2px}.detail-item .detail-name{margin-bottom:8px}.detail-item p{font-size:13px;color:#b9afc2;line-height:1.55;margin:5px 0}.detail-item b{color:#e8def1}@media(max-width:600px){.all-details-head{align-items:flex-start;flex-direction:column}.detail-item{grid-template-columns:70px 1fr}.detail-thumb{width:70px}}
 
 .detail-item{transition:border-color .2s,background .2s}.detail-item.active{border-color:rgba(216,180,254,.55);background:#171020;box-shadow:0 0 0 1px rgba(216,180,254,.08)}
+
+
+/* Result layout: keep a single-card reading compact instead of stretching it full width */
+.cards-grid.cards-count-1{grid-template-columns:minmax(190px,300px);justify-content:center}
+@media(max-width:600px){.cards-grid.cards-count-1{grid-template-columns:minmax(0,1fr);padding:0 12px}}
