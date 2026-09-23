@@ -1,91 +1,80 @@
-import { standardDeck, decks, spreads } from "./cards.js";
-import { tarotCards, minorArcanaMetadata } from "./tarot-data.js";
-import { buildReadingPayload } from "./reading-engine.js";
+const major = [
+  ["The Fool","Kẻ Khờ"],["The Magician","Nhà Ảo Thuật"],["The High Priestess","Nữ Tư Tế"],["The Empress","Hoàng Hậu"],
+  ["The Emperor","Hoàng Đế"],["The Hierophant","Giáo Hoàng"],["The Lovers","Tình Nhân"],["The Chariot","Cỗ Xe"],
+  ["Strength","Sức Mạnh"],["The Hermit","Ẩn Sĩ"],["Wheel of Fortune","Bánh Xe Số Phận"],["Justice","Công Lý"],
+  ["The Hanged Man","Người Treo Ngược"],["Death","Cái Chết"],["Temperance","Tiết Chế"],["The Devil","Quỷ"],
+  ["The Tower","Tòa Tháp"],["The Star","Ngôi Sao"],["The Moon","Mặt Trăng"],["The Sun","Mặt Trời"],
+  ["Judgement","Phán Xét"],["The World","Thế Giới"]
+];
+const suits=[["Wands","Gậy"],["Cups","Cốc"],["Swords","Kiếm"],["Pentacles","Tiền"]];
+const ranks=[["Ace","Át"],["2","2"],["3","3"],["4","4"],["5","5"],["6","6"],["7","7"],["8","8"],["9","9"],["10","10"],["Page","Tiểu Đồng"],["Knight","Kỵ Sĩ"],["Queen","Nữ Hoàng"],["King","Vua"]];
+const deck=[
+  ...major.map(([name,vi],i)=>({id:"major-"+i,name,label:vi,english:name,arcana:"Major"})),
+  ...suits.flatMap(([suit,vi])=>ranks.map(([rank,rankVi])=>({id:"minor-"+suit+"-"+rank,name:rank+" of "+suit,label:rankVi+" "+vi,english:rank+" of "+suit,arcana:"Minor",suit})))
+];
+const spreads=[
+  {id:"one",name:"1 lá",subtitle:"Thông điệp trọng tâm",positions:["Năng lượng chính"]},
+  {id:"three",name:"3 lá",subtitle:"Quá khứ · Hiện tại · Tương lai",positions:["Quá khứ","Hiện tại","Tương lai"]},
+  {id:"four",name:"4 lá",subtitle:"Vấn đề · Trở ngại · Hướng đi · Xu hướng",positions:["Vấn đề","Trở ngại","Hướng đi","Xu hướng"]}
+];
+const state={spreadId:"three",question:"",drawn:[]};
+const $=s=>document.querySelector(s);
+const els={deckGrid:$("#deckGrid"),spreadGrid:$("#spreadGrid"),question:$("#questionInput"),draw:$("#drawBtn"),reset:$("#resetBtn"),drawTable:$("#drawTable"),fan:$("#deckFan"),status:$("#selectionStatus"),reading:$("#readingSection"),cards:$("#cardsGrid"),detail:$("#detailPanel"),summary:$("#summaryText"),copy:$("#copyBtn")};
 
-const state = { deckId:decks[0].id, spreadId:spreads[1].id, question:"", drawn:[] };
-const $ = (s) => document.querySelector(s);
-const els = {
-  deckGrid:$("#deckGrid"), spreadGrid:$("#spreadGrid"), questionInput:$("#questionInput"),
-  drawBtn:$("#drawBtn"), resetBtn:$("#resetBtn"), readingSection:$("#readingSection"),
-  cardsGrid:$("#cardsGrid"), detailPanel:$("#detailPanel"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), selectionStatus:$("#selectionStatus"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
-  readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn")
-};
-
-function renderDecks(){
-  els.deckGrid.innerHTML = decks.map(deck => '<button class="deck-card '+(deck.id===state.deckId?"selected":"")+'" data-deck="'+deck.id+'" type="button"><div class="deck-art">✦</div><div><strong>'+deck.name+'</strong><span>'+deck.subtitle+'</span><small>'+deck.description+'</small></div></button>').join("");
-  els.deckGrid.querySelectorAll("[data-deck]").forEach(btn => btn.addEventListener("click", () => { state.deckId=btn.dataset.deck; renderDecks(); }));
-}
-
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function renderDeck(){els.deckGrid.innerHTML='<button class="deck-card selected" type="button"><div class="deck-art">✦</div><div><strong>Rider–Waite–Smith</strong><span>Chuẩn tham chiếu · 78 lá</span><small>Bộ bài Tarot kinh điển.</small></div></button>'}
 function renderSpreads(){
-  els.spreadGrid.innerHTML = spreads.map(spread => '<button class="spread-card '+(spread.id===state.spreadId?"selected":"")+'" data-spread="'+spread.id+'" type="button"><span class="spread-number">'+spread.positions.length+'</span><div><strong>'+spread.name+'</strong><span>'+spread.subtitle+'</span></div></button>').join("");
-  els.spreadGrid.querySelectorAll("[data-spread]").forEach(btn => btn.addEventListener("click", () => { state.spreadId=btn.dataset.spread; renderSpreads(); }));
+  els.spreadGrid.innerHTML=spreads.map(s=>'<button class="spread-card '+(s.id===state.spreadId?"selected":"")+'" data-spread="'+s.id+'" type="button"><span class="spread-number">'+s.positions.length+'</span><div><strong>'+s.name+'</strong><span>'+s.subtitle+'</span></div></button>').join("");
+  els.spreadGrid.querySelectorAll("[data-spread]").forEach(b=>b.onclick=()=>{state.spreadId=b.dataset.spread;state.drawn=[];renderSpreads()});
 }
-
-function shuffle(items){
-  const copy=[...items];
-  for(let i=copy.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [copy[i],copy[j]]=[copy[j],copy[i]]; }
-  return copy;
-}
-
-function showDrawTable(){
-  const spread=spreads.find(x=>x.id===state.spreadId);
+function startSelection(){
+  state.question=els.question.value.trim();
+  if(!state.question){els.question.focus();els.question.classList.add("error");setTimeout(()=>els.question.classList.remove("error"),800);return}
   state.drawn=[];
+  const spread=spreads.find(s=>s.id===state.spreadId);
   els.drawTable.classList.remove("hidden");
-  const pool=shuffle(standardDeck).slice(0,30);
-  els.deckFan.innerHTML=pool.map((_,i)=>'<button class="fan-card" data-card-index="'+i+'" aria-label="Lá bài '+(i+1)+'" type="button"></button>').join("");
-  els.deckFan.querySelectorAll("[data-card-index]").forEach((btn,i)=>{
-    btn.addEventListener("click",()=>{
-      if(state.drawn.length>=spread.positions.length)return;
-      const card=pool[i];
-      const meta=tarotCards.find(x=>x.name===card.name) || minorArcanaMetadata.find(x=>x.rank===card.name.split(" ")[0] && x.suit===card.suit);
-      state.drawn.push({...card,...(meta||{}),position:spread.positions[state.drawn.length],reversed:Math.random()<0.35,revealed:false});
-      btn.classList.add("selected");
-      btn.disabled=true;
-      els.selectionStatus.textContent=state.drawn.length+" / "+spread.positions.length+" · "+spread.positions[state.drawn.length-1];
-      if(state.drawn.length===spread.positions.length) renderReading();
-    });
-  });
+  els.reading.classList.add("hidden");
+  els.status.textContent="0 / "+spread.positions.length;
+  const pool=shuffle(deck).slice(0,30);
+  els.fan.innerHTML=pool.map((_,i)=>'<button class="fan-card" data-i="'+i+'" type="button" aria-label="Lá bài '+(i+1)+'"></button>').join("");
+  els.fan.querySelectorAll(".fan-card").forEach((b,i)=>b.onclick=()=>pickCard(b,pool[i],spread));
+  els.drawTable.scrollIntoView({behavior:"smooth",block:"start"});
 }
-
-function drawCards(){
-  state.question=els.questionInput.value.trim();
-  if(!state.question){ els.questionInput.focus(); els.questionInput.classList.add("error"); setTimeout(()=>els.questionInput.classList.remove("error"),900); return; }
-  showDrawTable();
+function pickCard(button,card,spread){
+  if(state.drawn.length>=spread.positions.length)return;
+  const reversed=Math.random()<0.35;
+  state.drawn.push({...card,position:spread.positions[state.drawn.length],reversed,revealed:false});
+  button.disabled=true;button.classList.add("selected");
+  els.status.textContent=state.drawn.length+" / "+spread.positions.length+" · "+state.drawn[state.drawn.length-1].position;
+  if(state.drawn.length===spread.positions.length) renderReading();
 }
-
 function renderReading(){
-  const spread=spreads.find(x=>x.id===state.spreadId);
-  els.readingSection.classList.remove("hidden");
-  els.summaryPanel.classList.remove("hidden");
-  els.readingMeta.textContent=spread.name+" · "+state.drawn.length+" lá";
-  els.cardsGrid.innerHTML=state.drawn.map((card,i)=>'<article class="tarot-card"><div class="card-flip" data-reveal="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face '+(card.reversed?"reversed":"")+'"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+card.arcana+'</small><strong>'+card.label+'</strong><em>'+ (card.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+card.position+'</span><strong>'+card.name+(card.reversed?" · Reversed":"")+'</strong></div></article>').join("");
-  els.cardsGrid.querySelectorAll("[data-reveal]").forEach(el=>el.addEventListener("click",()=>{const i=Number(el.dataset.reveal); el.classList.add("revealed"); state.drawn[i].revealed=true; showCardDetail(i);}));
-  els.summaryText.textContent=buildSummary();
-  const deck=decks.find(x=>x.id===state.deckId);
-  const payload=buildReadingPayload({question:state.question,deck,spread,cards:state.drawn});
-
-
-
-  els.readingSection.scrollIntoView({behavior:"smooth",block:"start"});
+  els.reading.classList.remove("hidden");
+  const spread=spreads.find(s=>s.id===state.spreadId);
+  els.cards.innerHTML=state.drawn.map((c,i)=>'<article class="tarot-card"><div class="card-flip" data-i="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+c.arcana+'</small><strong>'+c.label+'</strong><em>'+ (c.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+c.position+'</span><strong>'+c.name+'</strong></div></article>').join("");
+  els.cards.querySelectorAll(".card-flip").forEach(el=>el.onclick=()=>{const i=Number(el.dataset.i);el.classList.add("revealed");state.drawn[i].revealed=true;showDetail(i)});
+  els.summary.textContent=makeSummary();
+  els.reading.scrollIntoView({behavior:"smooth",block:"start"});
 }
-
-function showCardDetail(index){
-  const card=state.drawn[index];
-  const keywords=card.reversed?(card.reversed||[]):(card.upright||[]);
-  els.detailPanel.classList.remove("hidden");
-  els.detailPanel.innerHTML="<div class=\"detail-kicker\">LÁ "+(index+1)+" · "+card.position+"</div><h3>"+card.label+"</h3><p class=\"detail-name\">"+card.name+(card.reversed?" · Reversed":"")+"</p><p>"+(card.reversed?"Trạng thái ngược. ":"Trạng thái xuôi.")+"Các từ khóa tham khảo: "+keywords.join(" · ")+"</p>";
-  els.detailPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+function showDetail(i){
+  const c=state.drawn[i];
+  els.detail.classList.remove("hidden");
+  const common=c.reversed?["mất cân bằng","trì trệ","cần điều chỉnh"]:["phát triển","hành động","cân bằng","nhận thức"];
+  els.detail.innerHTML='<div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p>Từ khóa tham khảo: '+common.join(" · ")+'</p>';
 }
-
-function buildSummary(payload){
-  const spread=spreads.find(x=>x.id===state.spreadId), deck=decks.find(x=>x.id===state.deckId);
-  const lines=["🔮 TỔNG HỢP PHIÊN TRẢI BÀI TAROT","",`Bộ bài: ${deck.name}`,`Trải bài: ${spread.name} — ${spread.subtitle}`,`Câu hỏi: ${state.question}`,"","KẾT QUẢ:"];
-  state.drawn.forEach((card,i)=>lines.push(`${i+1}. ${card.position}: ${card.name} — ${card.reversed?"NGƯỢC":"XUÔI"}`));
-  lines.push("","YÊU CẦU GIẢI NGHĨA:","Hãy đọc toàn bộ trải bài theo ngữ cảnh câu hỏi. Phân tích từng lá theo vị trí, mối liên hệ giữa các lá, xu hướng tổng thể, điều cần lưu ý và gợi ý hành động thực tế. Không khẳng định tương lai như một sự thật chắc chắn.");
+function makeSummary(){
+  const spread=spreads.find(s=>s.id===state.spreadId);
+  const lines=["🔮 TỔNG HỢP PHIÊN TRẢI BÀI TAROT","","Bộ bài: Rider–Waite–Smith","Trải bài: "+spread.name+" — "+spread.subtitle,"Câu hỏi: "+state.question,"","KẾT QUẢ:"];
+  state.drawn.forEach((c,i)=>lines.push((i+1)+". "+c.position+": "+c.name+" — "+(c.reversed?"NGƯỢC":"XUÔI")));
+  lines.push("","Hãy giải nghĩa từng lá theo đúng vị trí, phân tích mối liên hệ giữa các lá, xu hướng tổng thể và gợi ý hành động thực tế. Tarot dùng cho mục đích chiêm nghiệm, không phải lời khẳng định chắc chắn về tương lai.");
   return lines.join("\n");
 }
-
-els.drawBtn.addEventListener("click",drawCards);
-els.resetBtn.addEventListener("click",()=>{state.question="";state.drawn=[];els.questionInput.value="";els.readingSection.classList.add("hidden");els.drawTable.classList.add("hidden");els.detailPanel.classList.add("hidden");els.selectionStatus.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"});});
-els.copyBtn.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.summaryText.textContent);els.copyBtn.textContent="Đã copy ✓";setTimeout(()=>els.copyBtn.textContent="Copy nội dung",1300);});
-renderDecks(); renderSpreads();
+async function copySummary(){
+  const text=els.summary.textContent;
+  try{await navigator.clipboard.writeText(text)}catch{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}
+  els.copy.textContent="Đã copy ✓";setTimeout(()=>els.copy.textContent="Copy nội dung",1200);
+}
+els.draw.onclick=startSelection;
+els.copy.onclick=copySummary;
+els.reset.onclick=()=>{state.question="";state.drawn=[];els.question.value="";els.drawTable.classList.add("hidden");els.reading.classList.add("hidden");els.detail.classList.add("hidden");els.status.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"})};
+renderDeck();renderSpreads();
