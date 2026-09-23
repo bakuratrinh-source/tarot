@@ -274,7 +274,7 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
 }
 .shuffle-stage .ritual-card:first-child{margin-left:0}
 .shuffle-stage .deck-fan.is-dragging{cursor:grabbing;scroll-behavior:auto}
-.shuffle-stage .deck-fan.is-dragging .ritual-card{pointer-events:none}
+.shuffle-stage .deck-fan.is-dragging .ritual-card{pointer-events:auto}
 .shuffle-stage.shuffling .ritual-card{
   animation:cardShufflePremium 3.8s cubic-bezier(.18,.72,.2,1) var(--delay) both;
 }
