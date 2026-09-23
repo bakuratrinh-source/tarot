@@ -6,7 +6,7 @@ const $ = (s) => document.querySelector(s);
 const els = {
   deckGrid:$("#deckGrid"), spreadGrid:$("#spreadGrid"), questionInput:$("#questionInput"),
   drawBtn:$("#drawBtn"), resetBtn:$("#resetBtn"), readingSection:$("#readingSection"),
-  cardsGrid:$("#cardsGrid"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), selectionStatus:$("#selectionStatus"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
+  cardsGrid:$("#cardsGrid"), detailPanel:$("#detailPanel"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), selectionStatus:$("#selectionStatus"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
   readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn")
 };
 
@@ -58,9 +58,17 @@ function renderReading(){
   els.summaryPanel.classList.remove("hidden");
   els.readingMeta.textContent=spread.name+" · "+state.drawn.length+" lá";
   els.cardsGrid.innerHTML=state.drawn.map((card,i)=>'<article class="tarot-card"><div class="card-flip" data-reveal="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face '+(card.reversed?"reversed":"")+'"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+card.arcana+'</small><strong>'+card.label+'</strong><em>'+ (card.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+card.position+'</span><strong>'+card.name+(card.reversed?" · Reversed":"")+'</strong></div></article>').join("");
-  els.cardsGrid.querySelectorAll("[data-reveal]").forEach(el=>el.addEventListener("click",()=>{el.classList.add("revealed"); state.drawn[Number(el.dataset.reveal)].revealed=true;}));
+  els.cardsGrid.querySelectorAll("[data-reveal]").forEach(el=>el.addEventListener("click",()=>{const i=Number(el.dataset.reveal); el.classList.add("revealed"); state.drawn[i].revealed=true; showCardDetail(i);}));
   els.summaryText.textContent=buildSummary();
   els.readingSection.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function showCardDetail(index){
+  const card=state.drawn[index];
+  const keywords=card.reversed?(card.reversed||[]):(card.upright||[]);
+  els.detailPanel.classList.remove("hidden");
+  els.detailPanel.innerHTML="<div class=\"detail-kicker\">LÁ "+(index+1)+" · "+card.position+"</div><h3>"+card.label+"</h3><p class=\"detail-name\">"+card.name+(card.reversed?" · Reversed":"")+"</p><p>"+(card.reversed?"Trạng thái ngược. ":"Trạng thái xuôi.")+"Các từ khóa tham khảo: "+keywords.join(" · ")+"</p>";
+  els.detailPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 function buildSummary(){
