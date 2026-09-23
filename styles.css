@@ -394,3 +394,287 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
   position:relative;
   z-index:calc(100 + var(--i));
 }
+
+
+/* ===== CINEMATIC ARCANA VISUAL — reference-inspired scene ===== */
+body{
+  background:
+    radial-gradient(circle at 73% 4%,rgba(186,112,255,.22),transparent 20%),
+    radial-gradient(circle at 45% 8%,rgba(85,38,154,.28),transparent 30%),
+    linear-gradient(135deg,#07040d 0%,#10061d 34%,#1b0a32 67%,#09040f 100%);
+}
+.main{
+  background:
+    linear-gradient(180deg,rgba(8,4,15,.10),rgba(8,3,15,.35)),
+    radial-gradient(ellipse at 75% 0%,rgba(148,73,230,.13),transparent 34%);
+}
+.topbar h1{
+  letter-spacing:.015em;
+  text-shadow:0 2px 0 #3a1e2a,0 0 28px rgba(188,111,255,.20);
+}
+.sidebar{
+  background:
+    linear-gradient(180deg,rgba(7,4,15,.97),rgba(13,6,25,.97)),
+    radial-gradient(circle at 50% 80%,rgba(120,53,194,.18),transparent 35%);
+  box-shadow:12px 0 50px rgba(0,0,0,.38);
+}
+.sidebar-quote{
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 75%,rgba(165,77,255,.28),transparent 38%),
+    linear-gradient(180deg,rgba(23,10,40,.92),rgba(8,4,18,.98));
+}
+.sidebar-quote:before{
+  content:"";
+  position:absolute;
+  left:15%;
+  right:15%;
+  bottom:-35px;
+  height:145px;
+  border-radius:50%;
+  border:1px solid rgba(202,142,255,.34);
+  box-shadow:0 0 35px rgba(165,75,255,.18),inset 0 0 35px rgba(165,75,255,.10);
+  transform:perspective(400px) rotateX(55deg);
+}
+.sidebar-quote:after{
+  content:"✦  ·  ✧  ·  ✦";
+  position:absolute;
+  left:0;right:0;bottom:14px;
+  color:rgba(236,191,108,.72);
+  letter-spacing:9px;
+  font-size:11px;
+}
+.deck-badge{
+  background:linear-gradient(145deg,rgba(20,10,35,.95),rgba(10,5,20,.90));
+  box-shadow:0 12px 38px rgba(0,0,0,.5),0 0 28px rgba(153,77,230,.08);
+}
+.shuffle-stage{
+  background:
+    linear-gradient(180deg,rgba(17,7,31,.74),rgba(5,3,12,.92)),
+    radial-gradient(ellipse at 50% 8%,rgba(197,111,255,.22),transparent 38%);
+  border-color:rgba(181,111,230,.66);
+  box-shadow:0 28px 90px rgba(0,0,0,.72),0 0 55px rgba(138,60,218,.12);
+}
+.ritual-table{
+  min-height:610px;
+  background:
+    linear-gradient(180deg,rgba(18,8,33,.12),rgba(4,2,11,.45)),
+    radial-gradient(ellipse at 50% 28%,rgba(136,67,204,.24),transparent 30%),
+    radial-gradient(ellipse at 50% 75%,rgba(184,80,255,.12),transparent 44%);
+}
+.ritual-table:before{
+  bottom:52px;
+  height:335px;
+  border-color:rgba(207,119,255,.36);
+  box-shadow:
+    0 0 0 14px rgba(126,53,194,.07),
+    0 0 0 32px rgba(126,53,194,.035),
+    0 0 80px rgba(171,78,255,.26),
+    inset 0 0 90px rgba(171,78,255,.13);
+}
+.ritual-table:after{
+  bottom:118px;
+  color:rgba(242,190,101,.45);
+  text-shadow:0 0 18px rgba(198,116,255,.5);
+}
+
+/* Deep fantasy room behind the interactive cards. */
+.ritual-scene{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  overflow:hidden;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 45%,rgba(129,62,194,.16),transparent 36%),
+    linear-gradient(180deg,rgba(32,13,58,.28),rgba(3,2,9,.32) 70%,rgba(5,2,10,.88));
+}
+.scene-moon{
+  position:absolute;
+  width:128px;height:128px;
+  left:50%;top:18px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 36% 31%,#fff5df 0 12%,#e5b5ff 35%,#a96bd4 68%,#563078 100%);
+  box-shadow:0 0 18px #fff0c9aa,0 0 55px #b36cff88,0 0 105px #8e45d844;
+  opacity:.95;
+}
+.scene-moon:after{
+  content:"";
+  position:absolute;inset:12px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 25% 30%,rgba(93,49,119,.18) 0 7px,transparent 8px),
+    radial-gradient(circle at 67% 24%,rgba(93,49,119,.14) 0 10px,transparent 11px),
+    radial-gradient(circle at 55% 69%,rgba(93,49,119,.16) 0 8px,transparent 9px);
+}
+.scene-mountains{
+  position:absolute;
+  left:7%;right:7%;top:95px;height:190px;
+  opacity:.78;
+  background:
+    linear-gradient(135deg,transparent 0 17%,#170b2c 17% 20%,transparent 20% 30%,#24103f 30% 36%,transparent 36% 48%,#120820 48% 54%,transparent 54% 65%,#281347 65% 71%,transparent 71%),
+    linear-gradient(155deg,transparent 0 29%,rgba(208,142,255,.22) 29% 30%,transparent 30% 48%,rgba(208,142,255,.15) 48% 49%,transparent 49%);
+  clip-path:polygon(0 100%,9% 61%,18% 76%,29% 40%,39% 73%,50% 25%,62% 72%,72% 47%,82% 73%,92% 34%,100% 69%,100% 100%);
+  filter:drop-shadow(0 0 18px rgba(164,82,230,.25));
+}
+.scene-column{
+  position:absolute;
+  top:18px;width:72px;height:270px;
+  opacity:.78;
+  background:
+    linear-gradient(90deg,rgba(36,15,52,.9),rgba(105,52,118,.65) 45%,rgba(26,10,39,.96)),
+    repeating-linear-gradient(180deg,transparent 0 26px,rgba(226,171,255,.10) 27px 29px);
+  border:1px solid rgba(204,139,244,.18);
+  box-shadow:0 0 25px rgba(102,42,148,.18);
+}
+.scene-column:before{
+  content:"";
+  position:absolute;left:-15px;right:-15px;top:-12px;height:24px;
+  border:1px solid rgba(220,165,255,.26);
+  background:linear-gradient(180deg,#42205a,#160a27);
+}
+.scene-column:after{
+  content:"";
+  position:absolute;left:-11px;right:-11px;bottom:-9px;height:18px;
+  border:1px solid rgba(220,165,255,.18);
+  background:#160a24;
+}
+.scene-column-left{left:2%;transform:perspective(500px) rotateY(8deg)}
+.scene-column-right{right:2%;transform:perspective(500px) rotateY(-8deg)}
+
+.scene-candle{
+  position:absolute;
+  top:208px;width:20px;height:82px;
+  border-radius:5px 5px 3px 3px;
+  background:linear-gradient(90deg,#8e673f,#f2d19a 45%,#825d37);
+  box-shadow:0 0 18px rgba(255,179,76,.28);
+}
+.scene-candle:before{
+  content:"";
+  position:absolute;left:4px;top:-20px;width:12px;height:25px;
+  border-radius:55% 55% 50% 50%;
+  background:radial-gradient(ellipse at 50% 80%,#fff3b2 0 16%,#ffb347 45%,#c75bff 78%,transparent 80%);
+  filter:blur(.2px);
+  box-shadow:0 0 16px #ff9f43aa;
+}
+.scene-candle i{
+  position:absolute;left:-16px;right:-16px;bottom:-6px;height:12px;
+  border-radius:50%;
+  border:1px solid rgba(229,173,91,.42);
+  background:#1b0b2a;
+}
+.scene-candle-left{left:8%}.scene-candle-right{right:8%}
+
+.scene-crystal{
+  position:absolute;
+  width:42px;height:78px;
+  bottom:128px;
+  background:linear-gradient(145deg,#b875ff,#5a2b8e 48%,#d7a2ff);
+  clip-path:polygon(50% 0,85% 18%,100% 75%,58% 100%,12% 82%,0 24%);
+  border:1px solid rgba(241,202,255,.45);
+  box-shadow:0 0 25px rgba(185,91,255,.62);
+  opacity:.9;
+}
+.scene-crystal:after{
+  content:"";
+  position:absolute;inset:8px 13px 12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.65),transparent 35%,rgba(255,190,255,.24));
+  clip-path:polygon(50% 0,100% 30%,62% 100%,30% 76%,0 35%);
+}
+.scene-crystal-a{left:14%;height:72px;bottom:115px;transform:rotate(-8deg)}
+.scene-crystal-b{left:20%;height:48px;width:30px;bottom:92px;transform:rotate(9deg)}
+.scene-crystal-c{right:14%;height:84px;bottom:116px;transform:rotate(8deg)}
+
+.scene-book{
+  position:absolute;
+  bottom:95px;width:115px;height:22px;
+  border-radius:4px;
+  background:linear-gradient(180deg,#34204a,#160a23);
+  border:1px solid rgba(219,163,93,.38);
+  box-shadow:0 8px 12px rgba(0,0,0,.45);
+}
+.scene-book:before,.scene-book:after{
+  content:"";
+  position:absolute;left:9px;right:9px;height:1px;
+  background:rgba(220,177,106,.45);
+}
+.scene-book:before{top:7px}.scene-book:after{top:13px}
+.scene-book-left{left:4%;transform:rotate(-7deg)}
+.scene-book-right{right:4%;transform:rotate(8deg)}
+
+.scene-wheel{
+  position:absolute;
+  right:10%;top:122px;width:82px;height:82px;
+  border:3px solid rgba(203,132,80,.58);
+  border-radius:50%;
+  box-shadow:0 0 22px rgba(211,115,255,.18);
+  transform:rotate(12deg);
+}
+.scene-wheel:before,.scene-wheel:after{
+  content:"";
+  position:absolute;left:50%;top:50%;
+  width:100%;height:2px;
+  background:rgba(211,153,89,.55);
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+.scene-wheel:after{transform:translate(-50%,-50%) rotate(-45deg)}
+.scene-ambient{
+  position:absolute;border-radius:50%;filter:blur(25px);
+}
+.scene-ambient-a{
+  width:220px;height:180px;left:15%;top:130px;
+  background:rgba(182,74,255,.16);
+}
+.scene-ambient-b{
+  width:240px;height:200px;right:12%;top:110px;
+  background:rgba(104,67,255,.14);
+}
+
+/* Bring the actual interactive layer above the scene. */
+.shuffle-heading,.shuffle-progress,.deck-carousel,.drag-hint,.pick-prompt,.draw-controls,.draw-status-line{
+  position:relative;
+}
+.shuffle-heading{z-index:30}
+.shuffle-progress{z-index:31}
+.deck-carousel{z-index:32}
+.drag-hint{z-index:33}
+.pick-prompt{z-index:34}
+.draw-controls{z-index:35}
+.shuffle-stage .ritual-card{z-index:calc(100 + var(--i));}
+
+/* Gold/purple glass controls from the reference. */
+.draw-controls{
+  background:linear-gradient(180deg,rgba(13,6,24,.88),rgba(7,3,14,.98));
+  border-top:1px solid rgba(207,142,255,.25);
+}
+.draw-controls button{
+  min-height:48px;
+  border-color:rgba(182,103,240,.68);
+  background:linear-gradient(145deg,rgba(31,12,52,.9),rgba(11,5,21,.94));
+  font-size:12px;
+  letter-spacing:.01em;
+}
+.draw-controls button:first-child,
+.draw-controls button:nth-child(2){
+  box-shadow:inset 0 0 22px rgba(169,76,255,.06);
+}
+.draw-controls button:hover{
+  border-color:#e2b1ff;
+  background:linear-gradient(145deg,#422064,#1a0a2d);
+}
+
+/* Reference-style top cards. */
+.draw-context{
+  gap:14px;
+}
+.draw-question,.draw-spread{
+  background:
+    linear-gradient(145deg,rgba(28,13,45,.92),rgba(10,5,20,.96));
+  border-color:rgba(180,103,232,.55);
+  box-shadow:0 12px 35px rgba(0,0,0,.25),inset 0 0 24px rgba(164,77,235,.04);
+}
+.draw-question button{
+  border-color:rgba(182,104,240,.65);
+}
