@@ -22,6 +22,11 @@ export const tarotCards = [
   {id:"major-20",number:20,name:"Judgement",vi:"Phán Xét",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/RWS_Tarot_20_Judgement.jpg",upright:["thức tỉnh","đánh giá","tiếng gọi","tái định hướng"],reversed:["tự phán xét","do dự","bỏ lỡ bài học"]},
   {id:"major-21",number:21,name:"The World",vi:"Thế Giới",arcana:"Major",image:"",upright:["hoàn thành","tích hợp","trưởng thành","chu kỳ trọn vẹn"],reversed:["chưa hoàn tất","thiếu khép lại","lặp lại"]},
 ];
+export const minorArcanaMetadata = [
+  ...["Wands","Cups","Swords","Pentacles"].flatMap(suit => Array.from({length:14},(_,i)=>({id:"minor-"+suit.toLowerCase()+"-"+(i+1),suit,rank:i===0?"Ace":i<10?String(i+1):["Page","Knight","Queen","King"][i-10],upright:["năng lượng của "+suit,"phát triển","trải nghiệm","hành động thực tế"],reversed:["mất cân bằng","trì trệ","quá mức","cần điều chỉnh"]})))
+];
+export const fullDeckCount = tarotCards.length + minorArcanaMetadata.length;
+
 export const deckMetadata = {
   id:"rider-waite-smith",
   name:"Rider–Waite–Smith",
