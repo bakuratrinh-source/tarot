@@ -177,7 +177,7 @@ function renderAllDetails(){
   els.detail.classList.remove("hidden");
   els.detail.innerHTML='<div class="all-details-head"><div><div class="detail-kicker">06 · CHI TIẾT CÁC LÁ</div><h3>Thông tin từng lá</h3></div><span class="muted">Có thể bấm vào lá bài để xem riêng</span></div><div class="details-list">'+state.drawn.map((c,i)=>{
     const info=getCardInfo(c);
-    return '<article class="detail-item"><img src="'+cardImage(c)+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" class="detail-thumb" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\'}"><div><div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p><b>Từ khóa:</b> '+(c.reversed?info.reversed:info.keywords)+'</p><p><b>Đối chiếu:</b> '+(c.reversed?info.keywords:info.reversed)+'</p><p><b>Nguyên tố / số:</b> '+info.element+' · '+info.number+'</p><p><b>Gợi ý:</b> '+info.advice+'</p></div></article>';
+    return '<article class="detail-item" data-detail-index="'+i+'"><img src="'+cardImage(c)+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" class="detail-thumb" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\'}"><div><div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p><b>Từ khóa:</b> '+(c.reversed?info.reversed:info.keywords)+'</p><p><b>Đối chiếu:</b> '+(c.reversed?info.keywords:info.reversed)+'</p><p><b>Nguyên tố / số:</b> '+info.element+' · '+info.number+'</p><p><b>Gợi ý:</b> '+info.advice+'</p></div></article>';
   }).join("")+'</div>';
 }
 
@@ -203,11 +203,13 @@ function renderReading(){
   els.reading.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function showDetail(i){
-  const c=state.drawn[i];
-  const info=getCardInfo(c);
   els.detail.classList.remove("hidden");
-  const src=cardImage(c);
-  els.detail.innerHTML='<div class="detail-card"><img src="'+src+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" class="detail-art" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\'}"><div><div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><div class="meaning-grid"><div><b>Từ khóa xuôi</b><span>'+info.keywords+'</span></div><div><b>Từ khóa ngược</b><span>'+info.reversed+'</span></div><div><b>Nguyên tố</b><span>'+info.element+' · Số '+info.number+'</span></div><div><b>Gợi ý chiêm nghiệm</b><span>'+info.advice+'</span></div></div></div></div>';
+  const target=els.detail.querySelector('[data-detail-index="'+i+'"]');
+  els.detail.querySelectorAll(".detail-item").forEach(el=>el.classList.remove("active"));
+  if(target){
+    target.classList.add("active");
+    target.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
 }
 function makeSummary(){
   const spread=spreads.find(s=>s.id===state.spreadId);
