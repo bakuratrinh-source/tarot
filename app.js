@@ -1,5 +1,6 @@
 import { standardDeck, decks, spreads } from "./cards.js";
 import { tarotCards, minorArcanaMetadata } from "./tarot-data.js";
+import { buildReadingPayload, buildAiPrompt } from "./reading-engine.js";
 
 const state = { deckId:decks[0].id, spreadId:spreads[1].id, question:"", drawn:[] };
 const $ = (s) => document.querySelector(s);
@@ -7,7 +8,7 @@ const els = {
   deckGrid:$("#deckGrid"), spreadGrid:$("#spreadGrid"), questionInput:$("#questionInput"),
   drawBtn:$("#drawBtn"), resetBtn:$("#resetBtn"), readingSection:$("#readingSection"),
   cardsGrid:$("#cardsGrid"), detailPanel:$("#detailPanel"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), selectionStatus:$("#selectionStatus"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
-  readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn")
+  readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn"), aiPrompt:$("#aiPrompt"), copyPromptBtn:$("#copyPromptBtn")
 };
 
 function renderDecks(){
@@ -60,6 +61,11 @@ function renderReading(){
   els.cardsGrid.innerHTML=state.drawn.map((card,i)=>'<article class="tarot-card"><div class="card-flip" data-reveal="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face '+(card.reversed?"reversed":"")+'"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+card.arcana+'</small><strong>'+card.label+'</strong><em>'+ (card.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+card.position+'</span><strong>'+card.name+(card.reversed?" · Reversed":"")+'</strong></div></article>').join("");
   els.cardsGrid.querySelectorAll("[data-reveal]").forEach(el=>el.addEventListener("click",()=>{const i=Number(el.dataset.reveal); el.classList.add("revealed"); state.drawn[i].revealed=true; showCardDetail(i);}));
   els.summaryText.textContent=buildSummary();
+  const deck=decks.find(x=>x.id===state.deckId);
+  const payload=buildReadingPayload({question:state.question,deck,spread,cards:state.drawn});
+  els.aiPrompt.textContent=buildAiPrompt(payload);
+  els.aiPrompt.classList.remove("hidden");
+  els.copyPromptBtn.classList.remove("hidden");
   els.readingSection.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
@@ -81,5 +87,6 @@ function buildSummary(){
 
 els.drawBtn.addEventListener("click",drawCards);
 els.resetBtn.addEventListener("click",()=>{state.question="";state.drawn=[];els.questionInput.value="";els.readingSection.classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});});
+els.copyPromptBtn.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.aiPrompt.textContent);els.copyPromptBtn.textContent="Đã copy prompt ✓";setTimeout(()=>els.copyPromptBtn.textContent="Copy prompt AI",1300);});
 els.copyBtn.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.summaryText.textContent);els.copyBtn.textContent="Đã copy ✓";setTimeout(()=>els.copyBtn.textContent="Copy nội dung",1300);});
 renderDecks(); renderSpreads();
