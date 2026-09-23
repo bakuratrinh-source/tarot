@@ -6,7 +6,7 @@ const $ = (s) => document.querySelector(s);
 const els = {
   deckGrid:$("#deckGrid"), spreadGrid:$("#spreadGrid"), questionInput:$("#questionInput"),
   drawBtn:$("#drawBtn"), resetBtn:$("#resetBtn"), readingSection:$("#readingSection"),
-  cardsGrid:$("#cardsGrid"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
+  cardsGrid:$("#cardsGrid"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
   readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn")
 };
 
@@ -26,12 +26,28 @@ function shuffle(items){
   return copy;
 }
 
+function showDrawTable(){
+  const spread=spreads.find(x=>x.id===state.spreadId);
+  state.drawn=[];
+  els.drawTable.classList.remove("hidden");
+  const pool=shuffle(standardDeck).slice(0,30);
+  els.deckFan.innerHTML=pool.map((_,i)=>'<button class="fan-card" data-card-index="'+i+'" aria-label="Lá bài '+(i+1)+'" type="button"></button>').join("");
+  els.deckFan.querySelectorAll("[data-card-index]").forEach((btn,i)=>{
+    btn.addEventListener("click",()=>{
+      if(state.drawn.length>=spread.positions.length)return;
+      const card=pool[i];
+      const meta=tarotCards.find(x=>x.name===card.name) || minorArcanaMetadata.find(x=>x.rank===card.name.split(" ")[0] && x.suit===card.suit);
+      state.drawn.push({...card,...(meta||{}),position:spread.positions[state.drawn.length],reversed:Math.random()<0.35});
+      btn.classList.add("selected");
+      if(state.drawn.length===spread.positions.length) renderReading();
+    });
+  });
+}
+
 function drawCards(){
   state.question=els.questionInput.value.trim();
   if(!state.question){ els.questionInput.focus(); els.questionInput.classList.add("error"); setTimeout(()=>els.questionInput.classList.remove("error"),900); return; }
-  const spread=spreads.find(x=>x.id===state.spreadId);
-  state.drawn=shuffle(standardDeck).slice(0,spread.positions.length).map((card,index)=>{ const meta=tarotCards.find(x=>x.name===card.name) || minorArcanaMetadata.find(x=>x.rank===card.name.split(" ")[0] && x.suit===card.suit); return {...card,...(meta||{}),position:spread.positions[index],reversed:Math.random()<0.35}; });
-  renderReading();
+  showDrawTable();
 }
 
 function renderReading(){
