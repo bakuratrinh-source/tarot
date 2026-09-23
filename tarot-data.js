@@ -1,0 +1,32 @@
+export const tarotCards = [
+  {id:"major-00",number:0,name:"The Fool",vi:"Kẻ Khờ",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/The_Fool_(Rider-Waite_Smith_tarot_deck).png",upright:["khởi đầu","tự do","niềm tin","phiêu lưu"],reversed:["liều lĩnh","thiếu chuẩn bị","bốc đồng"]},
+  {id:"major-01",number:1,name:"The Magician",vi:"Nhà Ảo Thuật",arcana:"Major",image:"",upright:["chủ động","kỹ năng","ý chí","biến ý tưởng thành hành động"],reversed:["phân tán","thao túng","tiềm năng chưa dùng"]},
+  {id:"major-02",number:2,name:"The High Priestess",vi:"Nữ Tư Tế",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/The_High_Priestess_(Rider-Waite_Smith_tarot_deck).png",upright:["trực giác","chiều sâu","bí mật","lắng nghe"],reversed:["nhiễu trực giác","điều bị che giấu","thiếu kiên nhẫn"]},
+  {id:"major-03",number:3,name:"The Empress",vi:"Hoàng Hậu",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/The_Empress_(Rider-Waite_Smith_tarot_deck).png",upright:["nuôi dưỡng","sáng tạo","phong phú","phát triển"],reversed:["trì trệ","nuông chiều","thiếu chăm sóc"]},
+  {id:"major-04",number:4,name:"The Emperor",vi:"Hoàng Đế",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/RWS_Tarot_04_Emperor.jpg",upright:["cấu trúc","kỷ luật","lãnh đạo","ổn định"],reversed:["cứng nhắc","kiểm soát","xung đột quyền lực"]},
+  {id:"major-05",number:5,name:"The Hierophant",vi:"Giáo Hoàng",arcana:"Major",image:"",upright:["truyền thống","học hỏi","hệ thống","cố vấn"],reversed:["đặt câu hỏi khuôn mẫu","độc lập","xung đột niềm tin"]},
+  {id:"major-06",number:6,name:"The Lovers",vi:"Tình Nhân",arcana:"Major",image:"",upright:["lựa chọn","hòa hợp","giá trị chung","kết nối"],reversed:["mâu thuẫn giá trị","do dự","mất cân bằng"]},
+  {id:"major-07",number:7,name:"The Chariot",vi:"Cỗ Xe",arcana:"Major",image:"",upright:["ý chí","tiến lên","tập trung","kiểm soát hướng đi"],reversed:["mất phương hướng","nóng vội","thiếu kiểm soát"]},
+  {id:"major-08",number:8,name:"Strength",vi:"Sức Mạnh",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Strength,_Waite-Smith_Tarot_Deck,_Yale_University.jpg",upright:["can đảm","kiên nhẫn","nội lực","lòng trắc ẩn"],reversed:["nghi ngờ bản thân","căng thẳng","thiếu tự chủ"]},
+  {id:"major-09",number:9,name:"The Hermit",vi:"Ẩn Sĩ",arcana:"Major",image:"",upright:["chiêm nghiệm","tìm hiểu","độc lập","trí tuệ"],reversed:["cô lập","né tránh","thiếu định hướng"]},
+  {id:"major-10",number:10,name:"Wheel of Fortune",vi:"Bánh Xe Số Phận",arcana:"Major",image:"",upright:["thay đổi","chu kỳ","cơ hội","bước ngoặt"],reversed:["kháng cự thay đổi","chu kỳ lặp lại","bất ổn"]},
+  {id:"major-11",number:11,name:"Justice",vi:"Công Lý",arcana:"Major",image:"",upright:["cân bằng","trách nhiệm","sự thật","quyết định"],reversed:["thiếu cân bằng","thiên lệch","né trách nhiệm"]},
+  {id:"major-12",number:12,name:"The Hanged Man",vi:"Người Treo Ngược",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/The_Hanged_Man_(Rider-Waite_Smith_tarot_deck).png",upright:["tạm dừng","góc nhìn mới","buông bỏ","chấp nhận"],reversed:["trì hoãn","bế tắc","không muốn buông"]},
+  {id:"major-13",number:13,name:"Death",vi:"Cái Chết",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/RWS_Tarot_13_Death.jpg",upright:["kết thúc","chuyển hóa","tái sinh","đổi mới"],reversed:["bám víu","kháng cự thay đổi","kéo dài cái cũ"]},
+  {id:"major-14",number:14,name:"Temperance",vi:"Tiết Chế",arcana:"Major",image:"",upright:["cân bằng","điều độ","kết hợp","chữa lành"],reversed:["quá mức","thiếu cân bằng","nóng vội"]},
+  {id:"major-15",number:15,name:"The Devil",vi:"Quỷ",arcana:"Major",image:"",upright:["ràng buộc","ham muốn","thói quen","vật chất"],reversed:["nhận ra ràng buộc","giải phóng","đối diện bóng tối"]},
+  {id:"major-16",number:16,name:"The Tower",vi:"Tòa Tháp",arcana:"Major",image:"",upright:["đổ vỡ","thay đổi đột ngột","sự thật","tái cấu trúc"],reversed:["né tránh khủng hoảng","sợ thay đổi","áp lực tích tụ"]},
+  {id:"major-17",number:17,name:"The Star",vi:"Ngôi Sao",arcana:"Major",image:"",upright:["hy vọng","định hướng","cảm hứng","phục hồi"],reversed:["mất niềm tin","bi quan","thiếu kết nối"]},
+  {id:"major-18",number:18,name:"The Moon",vi:"Mặt Trăng",arcana:"Major",image:"",upright:["vô thức","cảm xúc","mơ hồ","trực giác"],reversed:["sáng tỏ dần","lo âu","nhầm lẫn"]},
+  {id:"major-19",number:19,name:"The Sun",vi:"Mặt Trời",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/RWS_Tarot_19_Sun.jpg",upright:["sáng rõ","niềm vui","sức sống","thành tựu"],reversed:["niềm vui bị che khuất","quá kỳ vọng","thiếu tự tin"]},
+  {id:"major-20",number:20,name:"Judgement",vi:"Phán Xét",arcana:"Major",image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/RWS_Tarot_20_Judgement.jpg",upright:["thức tỉnh","đánh giá","tiếng gọi","tái định hướng"],reversed:["tự phán xét","do dự","bỏ lỡ bài học"]},
+  {id:"major-21",number:21,name:"The World",vi:"Thế Giới",arcana:"Major",image:"",upright:["hoàn thành","tích hợp","trưởng thành","chu kỳ trọn vẹn"],reversed:["chưa hoàn tất","thiếu khép lại","lặp lại"]},
+];
+export const deckMetadata = {
+  id:"rider-waite-smith",
+  name:"Rider–Waite–Smith",
+  creator:"Pamela Colman Smith / A. E. Waite",
+  originalPeriod:"1909–1910",
+  imageSource:"Wikimedia Commons public-domain scans",
+  note:"Các URL artwork được chọn từ Wikimedia Commons; trước khi phát hành thương mại cần kiểm tra giấy phép theo quốc gia mục tiêu."
+};
