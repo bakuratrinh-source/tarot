@@ -202,3 +202,168 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
   .shuffle-stage.ritual-ready .ritual-card{transform:translateX(-50%) translateX(calc(var(--spread-x) * .45)) translateY(0) rotate(0) scale(.9)}
   .shuffle-stage.ritual-ready .ritual-card:hover{transform:translateX(-50%) translateX(calc(var(--spread-x) * .45)) translateY(-14px) rotate(0) scale(1.08)}
 }
+
+/* ===== Premium 78-card picker: larger, scrollable, touch-friendly ===== */
+.shuffle-stage .ritual-table{
+  min-height:610px;
+}
+.shuffle-progress{
+  width:min(460px,70%);
+  height:5px;
+  margin:8px auto 2px;
+  border-radius:999px;
+  background:#241631;
+  border:1px solid #4c3260;
+  overflow:hidden;
+  position:relative;
+  z-index:12;
+}
+.shuffle-progress>div{
+  width:0%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#8144d9,#c77bff,#f0c86f);
+  box-shadow:0 0 16px #b45cff;
+  transition:width .15s linear;
+}
+.deck-carousel{
+  position:absolute;
+  z-index:10;
+  left:0;
+  right:0;
+  bottom:52px;
+  height:225px;
+}
+.shuffle-stage .deck-fan{
+  position:absolute;
+  left:48px;
+  right:48px;
+  bottom:0;
+  width:auto;
+  height:225px;
+  min-height:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  gap:0;
+  padding:0 28px 24px;
+  overflow-x:auto;
+  overflow-y:visible;
+  scroll-behavior:smooth;
+  scroll-snap-type:x proximity;
+  cursor:grab;
+  mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+  scrollbar-width:none;
+  touch-action:pan-x;
+}
+.shuffle-stage .deck-fan::-webkit-scrollbar{display:none}
+.shuffle-stage .ritual-card{
+  position:relative;
+  left:auto;
+  bottom:auto;
+  flex:0 0 68px;
+  width:68px;
+  height:114px;
+  margin-left:-21px;
+  scroll-snap-align:center;
+  transform:translateY(70px) scale(.65);
+  opacity:0;
+  transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .35s,filter .25s,box-shadow .25s;
+  z-index:calc(100 + var(--i));
+}
+.shuffle-stage .ritual-card:first-child{margin-left:0}
+.shuffle-stage .deck-fan.is-dragging{cursor:grabbing;scroll-behavior:auto}
+.shuffle-stage .deck-fan.is-dragging .ritual-card{pointer-events:none}
+.shuffle-stage.shuffling .ritual-card{
+  animation:cardShufflePremium 3.8s cubic-bezier(.18,.72,.2,1) var(--delay) both;
+}
+@keyframes cardShufflePremium{
+  0%{opacity:0;transform:translateY(50px) scale(.55) rotate(0)}
+  12%{opacity:1;transform:translate(var(--shuffle-x),-72px) scale(.72) rotate(var(--shuffle-r))}
+  27%{transform:translate(calc(var(--shuffle-x) * -1),8px) scale(.76) rotate(calc(var(--shuffle-r) * -1))}
+  43%{transform:translate(var(--shuffle-x),-36px) scale(.8) rotate(var(--shuffle-r))}
+  58%{transform:translate(calc(var(--shuffle-x) * -1),10px) scale(.84) rotate(calc(var(--shuffle-r) * -1))}
+  73%{transform:translate(0,-52px) scale(.88) rotate(0)}
+  100%{opacity:1;transform:translate(0,0) scale(.92) rotate(0)}
+}
+.shuffle-stage.ritual-ready .deck-fan{
+  padding-left:45px;
+  padding-right:45px;
+}
+.shuffle-stage.ritual-ready .ritual-card{
+  opacity:1;
+  transform:translateY(0) scale(.92);
+}
+.shuffle-stage.ritual-ready .ritual-card:hover{
+  transform:translateY(-27px) scale(1.12);
+  filter:brightness(1.2);
+  box-shadow:0 0 25px #c568ffcc,0 15px 28px #000c;
+  z-index:600;
+}
+.shuffle-stage.ritual-ready .ritual-card.selected{
+  transform:translateY(25px) scale(.76);
+  opacity:.22;
+  filter:grayscale(.5);
+}
+.shuffle-stage.ritual-ready .ritual-card:focus-visible{
+  outline:2px solid #e5b6ff;
+  outline-offset:5px;
+}
+.carousel-arrow{
+  position:absolute;
+  z-index:20;
+  top:68px;
+  width:48px;
+  height:48px;
+  border:1px solid #b36af2;
+  border-radius:50%;
+  background:linear-gradient(145deg,#241034e8,#0e0718f2);
+  color:#f2d4ff;
+  font:32px/1 "Cormorant Garamond",serif;
+  cursor:pointer;
+  box-shadow:0 0 25px #a954ff3d;
+  transition:transform .2s,background .2s,box-shadow .2s;
+}
+.carousel-arrow:hover{
+  transform:scale(1.1);
+  background:#4a2370;
+  box-shadow:0 0 35px #b25cff88;
+}
+.carousel-prev{left:15px}.carousel-next{right:15px}
+.drag-hint{
+  position:absolute;
+  z-index:14;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  color:#a997b5;
+  font-size:8px;
+  letter-spacing:.04em;
+  white-space:nowrap;
+  pointer-events:none;
+}
+.drag-hint span{color:#d9aaff;margin:0 7px;font-size:13px}
+.shuffle-stage .pick-prompt{
+  bottom:3px;
+  transform:translate(-50%,50%);
+}
+.shuffle-stage.ritual-ready .pick-prompt{
+  transform:translate(-50%,50%);
+}
+.shuffle-stage.shuffling .deck-carousel,
+.shuffle-stage.shuffling .drag-hint{opacity:.2;pointer-events:none}
+.shuffle-stage.shuffling .pick-prompt{bottom:12px}
+@media(max-width:1100px){
+  .shuffle-stage .ritual-card{flex-basis:62px;width:62px;height:105px;margin-left:-20px}
+  .shuffle-stage .deck-fan{left:42px;right:42px}
+}
+@media(max-width:700px){
+  .shuffle-stage .ritual-table{min-height:540px}
+  .deck-carousel{bottom:66px;height:185px}
+  .shuffle-stage .deck-fan{left:38px;right:38px;height:185px;padding:0 22px 20px}
+  .shuffle-stage .ritual-card{flex-basis:62px;width:62px;height:104px;margin-left:-17px}
+  .carousel-arrow{width:40px;height:40px;top:58px;font-size:27px}
+  .carousel-prev{left:7px}.carousel-next{right:7px}
+  .drag-hint{bottom:28px;font-size:7px}
+}
