@@ -107,3 +107,98 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
 @media(max-width:1050px){.draw-context{grid-template-columns:1fr}.ritual-card{width:58px;height:98px}.shuffle-stage.ritual-ready .ritual-card:nth-child(1){--x:-380px}.shuffle-stage.ritual-ready .ritual-card:nth-child(2){--x:-350px}.shuffle-stage.ritual-ready .ritual-card:nth-child(3){--x:-320px}.shuffle-stage.ritual-ready .ritual-card:nth-child(4){--x:-290px}.shuffle-stage.ritual-ready .ritual-card:nth-child(5){--x:-260px}.shuffle-stage.ritual-ready .ritual-card:nth-child(6){--x:-230px}.shuffle-stage.ritual-ready .ritual-card:nth-child(7){--x:-200px}.shuffle-stage.ritual-ready .ritual-card:nth-child(8){--x:-170px}.shuffle-stage.ritual-ready .ritual-card:nth-child(9){--x:-140px}.shuffle-stage.ritual-ready .ritual-card:nth-child(10){--x:-110px}.shuffle-stage.ritual-ready .ritual-card:nth-child(11){--x:-80px}.shuffle-stage.ritual-ready .ritual-card:nth-child(12){--x:-50px}.shuffle-stage.ritual-ready .ritual-card:nth-child(13){--x:-20px}.shuffle-stage.ritual-ready .ritual-card:nth-child(14){--x:10px}.shuffle-stage.ritual-ready .ritual-card:nth-child(15){--x:40px}.shuffle-stage.ritual-ready .ritual-card:nth-child(16){--x:70px}.shuffle-stage.ritual-ready .ritual-card:nth-child(17){--x:100px}.shuffle-stage.ritual-ready .ritual-card:nth-child(18){--x:130px}.shuffle-stage.ritual-ready .ritual-card:nth-child(19){--x:160px}.shuffle-stage.ritual-ready .ritual-card:nth-child(20){--x:190px}.shuffle-stage.ritual-ready .ritual-card:nth-child(21){--x:220px}.shuffle-stage.ritual-ready .ritual-card:nth-child(22){--x:250px}.shuffle-stage.ritual-ready .ritual-card:nth-child(23){--x:280px}.shuffle-stage.ritual-ready .ritual-card:nth-child(24){--x:310px}.shuffle-stage.ritual-ready .ritual-card:nth-child(25){--x:340px}}
 @media(max-width:700px){.draw-context{grid-template-columns:1fr}.ritual-table{min-height:390px}.draw-controls{grid-template-columns:1fr}.pick-prompt{min-width:250px;max-width:85%}.ritual-card{width:46px;height:78px}.shuffle-stage.ritual-ready .ritual-card{--x:calc(var(--mobile-x,0px));}.deck-fan{left:1%;right:1%}.ritual-card:nth-child(n){transform:translateX(-50%) translateY(0) rotate(var(--rot)) translateX(var(--x)) scale(.85)}}
 .reduce-motion *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+
+/* ===== 78-card horizontal shuffle ===== */
+.shuffle-stage .ritual-table{min-height:520px}
+.shuffle-stage .deck-fan{
+  left:0;right:0;bottom:54px;height:210px;
+  display:block;overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+}
+.shuffle-stage .ritual-card{
+  left:50%;bottom:35px;width:44px;height:76px;
+  transform:translateX(-50%) translateY(45px) rotate(0deg) scale(.55);
+  opacity:0;
+  transition:none;
+}
+.shuffle-stage .ritual-card:before{inset:5px;font-size:13px}
+.shuffle-stage.shuffling .ritual-card{
+  animation:cardShuffleHorizontal 3.8s cubic-bezier(.18,.72,.2,1) var(--delay) both;
+}
+@keyframes cardShuffleHorizontal{
+  0%{
+    opacity:0;
+    transform:translateX(-50%) translateY(20px) rotate(0deg) scale(.5);
+  }
+  12%{
+    opacity:1;
+    transform:translateX(-50%) translateX(var(--shuffle-x)) translateY(-55px) rotate(var(--shuffle-r)) scale(.78);
+  }
+  27%{
+    opacity:1;
+    transform:translateX(-50%) translateX(calc(var(--shuffle-x) * -1)) translateY(5px) rotate(calc(var(--shuffle-r) * -1)) scale(.82);
+  }
+  43%{
+    opacity:1;
+    transform:translateX(-50%) translateX(var(--shuffle-x)) translateY(-25px) rotate(var(--shuffle-r)) scale(.86);
+  }
+  58%{
+    opacity:1;
+    transform:translateX(-50%) translateX(calc(var(--shuffle-x) * -1)) translateY(8px) rotate(calc(var(--shuffle-r) * -1)) scale(.9);
+  }
+  73%{
+    opacity:1;
+    transform:translateX(-50%) translateX(0) translateY(-42px) rotate(0deg) scale(.92);
+  }
+  100%{
+    opacity:1;
+    transform:translateX(-50%) translateX(var(--spread-x)) translateY(0) rotate(0deg) scale(1);
+  }
+}
+.shuffle-stage.ritual-ready .ritual-card{
+  opacity:1;
+  transform:translateX(-50%) translateX(var(--spread-x)) translateY(0) rotate(0deg) scale(1);
+  z-index:calc(100 + var(--i));
+}
+.shuffle-stage.ritual-ready .ritual-card:hover{
+  transform:translateX(-50%) translateX(var(--spread-x)) translateY(-22px) rotate(0deg) scale(1.16);
+  z-index:500;
+}
+.shuffle-stage.ritual-ready .ritual-card.selected{
+  transform:translateX(-50%) translateX(var(--spread-x)) translateY(30px) rotate(0deg) scale(.75);
+}
+.shuffle-stage.shuffling .shuffle-stack{
+  animation:realShuffleStack 3.8s ease-in-out both;
+}
+@keyframes realShuffleStack{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.95) rotate(0)}
+  18%{transform:translate(calc(-50% - 70px),-50%) rotate(-13deg)}
+  36%{transform:translate(calc(-50% + 70px),-50%) rotate(14deg)}
+  52%{transform:translate(calc(-50% - 50px),-50%) rotate(-10deg)}
+  68%{transform:translate(calc(-50% + 45px),-50%) rotate(9deg)}
+  84%{transform:translate(-50%,-50%) scale(1.12) rotate(0);opacity:.9}
+  100%{transform:translate(-50%,-50%) scale(.72);opacity:0}
+}
+.shuffle-stage.ritual-ready .shuffle-stack{opacity:.18;transform:translate(-50%,-50%) scale(.65)}
+.shuffle-stage.shuffling .pick-prompt{opacity:.55}
+.shuffle-stage.ritual-ready .pick-prompt{box-shadow:0 0 35px #b65cff55;border-color:#d19aff}
+.shuffle-stage.ritual-ready .pick-prompt span{animation:promptGlow 1.5s ease-in-out infinite}
+@keyframes promptGlow{50%{text-shadow:0 0 18px #d27cff;transform:scale(1.12)}}
+.shuffle-stage .ritual-card:nth-child(odd){filter:brightness(.92)}
+.shuffle-stage.ritual-ready .ritual-card:nth-child(4n){filter:brightness(1.04)}
+.shuffle-stage.ritual-ready .ritual-card:nth-child(7n){filter:brightness(.97) drop-shadow(0 0 7px #9d55d944)}
+.draw-status-line{margin-bottom:4px}
+@media(max-width:1200px){
+  .shuffle-stage .ritual-card{width:38px;height:68px}
+  .shuffle-stage .ritual-card{--spread-step:11px}
+  .shuffle-stage.ritual-ready .ritual-card{transform:translateX(-50%) translateX(calc(var(--spread-x) * .82)) translateY(0) rotate(0) scale(.94)}
+  .shuffle-stage.ritual-ready .ritual-card:hover{transform:translateX(-50%) translateX(calc(var(--spread-x) * .82)) translateY(-18px) rotate(0) scale(1.1)}
+}
+@media(max-width:700px){
+  .shuffle-stage .ritual-table{min-height:420px}
+  .shuffle-stage .deck-fan{bottom:60px;height:150px;overflow-x:auto;overflow-y:hidden;mask-image:none;-webkit-mask-image:none}
+  .shuffle-stage .ritual-card{position:absolute;width:43px;height:73px}
+  .shuffle-stage.ritual-ready .ritual-card{transform:translateX(-50%) translateX(calc(var(--spread-x) * .45)) translateY(0) rotate(0) scale(.9)}
+  .shuffle-stage.ritual-ready .ritual-card:hover{transform:translateX(-50%) translateX(calc(var(--spread-x) * .45)) translateY(-14px) rotate(0) scale(1.08)}
+}
