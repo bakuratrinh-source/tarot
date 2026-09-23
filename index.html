@@ -9,10 +9,14 @@
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+<div class="cosmic-bg"><span class="moon"></span><span class="star s1">✦</span><span class="star s2">✧</span><span class="star s3">✦</span><span class="star s4">·</span></div>
 <div class="noise"></div>
+
 <main class="arcana-app">
 <aside class="sidebar">
-  <div class="brand"><div class="brand-symbol">✦</div><strong>ARCANA</strong><small>TAROT READING</small></div>
+  <div class="brand">
+    <div class="brand-symbol">✦</div><strong>ARCANA</strong><small>TAROT READING</small>
+  </div>
   <nav>
     <a class="nav-item active"><span>✧</span>Trải Bài Mới</a>
     <a class="nav-item"><span>◷</span>Lịch Sử</a>
@@ -20,18 +24,36 @@
     <a class="nav-item"><span>?</span>Hướng Dẫn</a>
     <a class="nav-item"><span>⚙</span>Cài Đặt</a>
   </nav>
-  <div class="sidebar-quote"><div>☾</div><p>“Mỗi lá bài là một cánh cửa đến câu chuyện sâu bên trong bạn.”</p></div>
+  <div class="sidebar-quote">
+    <div>☾</div>
+    <p>“Mỗi lá bài<br>là một cánh cửa<br>đến câu chuyện<br>sâu bên trong bạn.”</p>
+    <span class="quote-star">✦</span>
+  </div>
 </aside>
 
 <section class="main">
-<header class="topbar"><div><span class="eyebrow">ARCANA · TAROT READING</span><h1>Trải Bài Tarot</h1><p>Đặt câu hỏi, rút những lá bài, và khám phá thông điệp dành cho bạn.</p></div>
-  <div class="deck-badge"><div class="mini-card">✦</div><div><b>Rider Waite</b><small>78 lá bài kinh điển</small></div><span>›</span></div>
+<header class="topbar">
+  <div class="hero-copy">
+    <span class="eyebrow">ARCANA · TAROT READING</span>
+    <h1>Trải Bài Tarot</h1>
+    <p>Đặt câu hỏi, rút những lá bài, và khám phá thông điệp dành cho bạn.</p>
+  </div>
+  <div class="deck-badge">
+    <div class="mini-card">✦</div>
+    <div><b>Rider Waite</b><small>78 lá bài kinh điển</small></div><span>›</span>
+  </div>
 </header>
 
 <section class="control-panel">
-  <div class="progress"><span class="active">1&nbsp; Câu hỏi</span><i>→</i><span>2&nbsp; Chọn kiểu trải</span><i>→</i><span>3&nbsp; Rút bài</span><i>→</i><span>4&nbsp; Xem kết quả</span></div>
+  <div class="progress">
+    <span class="active">❶&nbsp; Câu hỏi</span><i>→</i><span>②&nbsp; Chọn kiểu trải</span><i>→</i><span>③&nbsp; Rút bài</span><i>→</i><span>④&nbsp; Xem kết quả</span>
+  </div>
   <div class="control-grid">
-    <div class="question-box"><label>✎ &nbsp; Bạn muốn hỏi điều gì?</label><textarea id="questionInput" rows="3" maxlength="500" placeholder="Viết câu hỏi của bạn ở đây…"></textarea><small>0 / 500</small></div>
+    <div class="question-box">
+      <label>✎ &nbsp; Bạn muốn hỏi điều gì?</label>
+      <textarea id="questionInput" rows="3" maxlength="500" placeholder="Tôi đang khởi nghiệp, tôi nên làm gì để phát triển trong thời gian tới?"></textarea>
+      <small>0 / 500</small>
+    </div>
     <div class="spread-box"><label>Chọn kiểu trải bài</label><div id="spreadGrid" class="spread-grid"></div></div>
     <button id="drawBtn" class="start-btn" type="button">Bắt đầu trải bài <span>→</span></button>
   </div>
@@ -48,21 +70,40 @@
 </section>
 
 <section id="readingSection" class="result-section hidden">
-  <div class="section-head result-title"><div><span class="eyebrow">THE READING</span><h2>Câu chuyện hiện ra</h2><p>Nhìn từng vị trí, sau đó nhìn mối liên hệ giữa toàn bộ trải bài.</p></div><span id="readingMeta" class="status-pill"></span></div>
+  <div class="section-head result-title">
+    <div><span class="eyebrow">THE READING</span><h2>✦ &nbsp; KẾT QUẢ TRẢI BÀI</h2></div>
+    <div class="result-meta"><span id="readingMeta" class="status-pill"></span><button type="button" class="save-btn">▣ &nbsp; Lưu trải bài</button></div>
+  </div>
+
   <div class="reading-layout">
     <div class="cards-column">
       <div id="cardsGrid" class="cards-grid"></div>
-      <div class="reading-actions"><button id="resetBtn" type="button">↻ Trải lại</button><button type="button" onclick="document.querySelector('#detailPanel')?.scrollIntoView({behavior:'smooth'})">▢ Xem chi tiết từng lá</button></div>
+      <div class="reading-actions">
+        <button id="resetBtn" type="button">↻ &nbsp; Trải lại</button>
+        <button type="button" onclick="document.querySelector('#detailPanel')?.scrollIntoView({behavior:'smooth'})">▢ &nbsp; Xem chi tiết từng lá</button>
+        <button type="button" class="share-btn">♧ &nbsp; Chia sẻ kết quả</button>
+      </div>
     </div>
+
     <aside class="overview-panel">
-      <div class="panel-title">✦ &nbsp; TỔNG QUAN TRẢI BÀI</div>
-      <p>Đây là phần trình bày trực quan để bạn đọc toàn bộ câu chuyện. Chi tiết từng lá nằm ngay bên dưới.</p>
+      <div class="panel-title"><span>✦</span> TỔNG QUAN TRẢI BÀI</div>
+      <div class="overview-copy">
+        <p>Đây là phần trình bày trực quan để bạn đọc toàn bộ câu chuyện. Hãy nhìn từng vị trí, sau đó quan sát mối liên hệ giữa các lá bài.</p>
+        <div class="action-title">✦ &nbsp; GỢI Ý CHIÊM NGHIỆM</div>
+        <ul><li>Đọc từng lá theo đúng vị trí.</li><li>Đối chiếu các điểm lặp lại giữa các lá.</li><li>Tập trung vào điều bạn có thể chủ động.</li><li>Dùng thông điệp như một góc nhìn tham khảo.</li></ul>
+      </div>
+      <div id="summaryPanel" class="summary-panel hidden">
+        <div class="summary-head"><div><span class="eyebrow">NỘI DUNG GỬI AI</span><h3>Copy để phân tích sâu</h3></div><button id="copyBtn" type="button">▣ &nbsp; Sao chép</button></div>
+        <p>Đã cấu trúc câu hỏi, vị trí và thông tin từng lá để bạn có thể gửi cho ChatGPT hoặc AI khác.</p>
+        <pre id="summaryText"></pre>
+      </div>
       <div class="overview-note">Tarot là công cụ chiêm nghiệm và tham khảo, không phải lời khẳng định chắc chắn về tương lai.</div>
     </aside>
   </div>
+
   <div id="detailPanel" class="detail-panel hidden"></div>
-  <div id="summaryPanel" class="summary-panel hidden"><div class="summary-head"><div><span class="eyebrow">READING BRIEF</span><h2>Bản tổng hợp gửi AI</h2></div><button id="copyBtn" type="button">Copy ↗</button></div><p>Copy nội dung này để yêu cầu AI phân tích sâu hơn theo câu hỏi và từng vị trí.</p><pre id="summaryText"></pre></div>
 </section>
+
 <footer>ARCANA · Tarot như công cụ chiêm nghiệm và tham khảo.</footer>
 </section>
 </main>
