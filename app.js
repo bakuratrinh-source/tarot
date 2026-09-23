@@ -346,52 +346,50 @@ function setupCardCarousel(){
   const step=420;
   prev?.addEventListener("click",()=>fan.scrollBy({left:-step,behavior:"smooth"}));
   next?.addEventListener("click",()=>fan.scrollBy({left:step,behavior:"smooth"}));
-  let dragging=false,startX=0,startScroll=0,moved=false,suppressClick=false;
+
+  let dragging=false,startX=0,startScroll=0,moved=false;
+
   fan.addEventListener("pointerdown",e=>{
     if(!$("#shuffleStage")?.classList.contains("ritual-ready"))return;
-    const card=e.target.closest(".fan-card");
-    dragging=true;moved=false;startX=e.clientX;startScroll=fan.scrollLeft;
+    dragging=true;
+    moved=false;
+    startX=e.clientX;
+    startScroll=fan.scrollLeft;
     fan.classList.add("is-dragging");
-    try{fan.setPointerCapture?.(e.pointerId)}catch{}
-    if(card) card.classList.add("pressing");
   });
+
   fan.addEventListener("pointermove",e=>{
     if(!dragging)return;
     const dx=e.clientX-startX;
-    if(Math.abs(dx)>7)moved=true;
+    if(Math.abs(dx)>8)moved=true;
     if(moved)fan.scrollLeft=startScroll-dx;
   });
-  const endDrag=e=>{
+
+  const endDrag=()=>{
     if(!dragging)return;
-    const target=document.elementFromPoint(e.clientX,e.clientY)?.closest?.(".fan-card");
-    const canPick=!moved && target && fan.contains(target) && $("#shuffleStage")?.classList.contains("ritual-ready");
-    dragging=false;fan.classList.remove("is-dragging");
-    fan.querySelectorAll(".pressing").forEach(x=>x.classList.remove("pressing"));
-    try{fan.releasePointerCapture?.(e.pointerId)}catch{}
-    if(canPick){
-      const i=Number(target.dataset.i);
-      const spread=spreads.find(s=>s.id===state.spreadId);
-      if(activePool[i] && !target.disabled){
-        suppressClick=true;
-        pickCard(target,activePool[i],spread);
-        setTimeout(()=>{suppressClick=false},0);
-      }
-    }
+    dragging=false;
+    fan.classList.remove("is-dragging");
   };
+
   fan.addEventListener("pointerup",endDrag);
-  fan.addEventListener("pointercancel",e=>{dragging=false;fan.classList.remove("is-dragging");});
+  fan.addEventListener("pointercancel",endDrag);
+  fan.addEventListener("pointerleave",()=>{if(dragging&&moved)endDrag()});
+
+  // If the user actually dragged, cancel the synthetic click.
+  // A normal click is left completely untouched so each card's own
+  // onclick handler in buildShuffleTable() can select it reliably.
   fan.addEventListener("click",e=>{
-    if(suppressClick){e.preventDefault();e.stopPropagation();suppressClick=false;return;}
-    if(moved){e.preventDefault();e.stopPropagation();moved=false;return;}
-    const target=e.target.closest(".fan-card");
-    if(!target || !fan.contains(target) || target.disabled)return;
-    const i=Number(target.dataset.i);
-    const spread=spreads.find(s=>s.id===state.spreadId);
-    if(activePool[i])pickCard(target,activePool[i],spread);
-  });
+    if(moved){
+      e.preventDefault();
+      e.stopPropagation();
+      moved=false;
+    }
+  },true);
+
   fan.addEventListener("wheel",e=>{
     if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
-      e.preventDefault();fan.scrollLeft+=e.deltaY;
+      e.preventDefault();
+      fan.scrollLeft+=e.deltaY;
     }
   },{passive:false});
 }
