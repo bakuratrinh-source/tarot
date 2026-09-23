@@ -48,10 +48,25 @@ function pickCard(button,card,spread){
   els.status.textContent=state.drawn.length+" / "+spread.positions.length+" · "+state.drawn[state.drawn.length-1].position;
   if(state.drawn.length===spread.positions.length) renderReading();
 }
+function cardImage(card){
+  const suitCode={Wands:"wa",Cups:"cu",Swords:"sw",Pentacles:"pe"};
+  let code="";
+  if(card.arcana==="Major"){
+    const n=major.findIndex(x=>x[0]===card.english);
+    code="ar"+String(n).padStart(2,"0");
+  } else {
+    const prefix=suitCode[card.suit];
+    const rank=card.name.split(" ")[0];
+    const rankCode={Ace:"ac","Page:" : "pa",Page:"pa",Knight:"kn",Queen:"qu",King:"ki"}[rank] || String(Number(rank)).padStart(2,"0");
+    code=prefix+rankCode;
+  }
+  return "https://petaloverflow.github.io/tarot-api/cards/"+code+".jpg";
+}
+
 function renderReading(){
   els.reading.classList.remove("hidden");
   const spread=spreads.find(s=>s.id===state.spreadId);
-  els.cards.innerHTML=state.drawn.map((c,i)=>'<article class="tarot-card"><div class="card-flip" data-i="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+c.arcana+'</small><strong>'+c.label+'</strong><em>'+ (c.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+c.position+'</span><strong>'+c.name+'</strong></div></article>').join("");
+  els.cards.innerHTML=state.drawn.map((c,i)=>'<article class="tarot-card"><div class="card-flip '+(c.reversed?"is-reversed":"")+'" data-i="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><img class="tarot-art" src="'+cardImage(c)+'" alt="'+c.name+'" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="card-symbol fallback-symbol">✦</div><span class="card-index">0'+(i+1)+'</span><strong>'+c.label+'</strong><em>'+ (c.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+c.position+'</span><strong>'+c.name+'</strong></div></article>').join("");
   els.cards.querySelectorAll(".card-flip").forEach(el=>el.onclick=()=>{const i=Number(el.dataset.i);el.classList.add("revealed");state.drawn[i].revealed=true;showDetail(i)});
   els.summary.textContent=makeSummary();
   els.reading.scrollIntoView({behavior:"smooth",block:"start"});
@@ -60,7 +75,7 @@ function showDetail(i){
   const c=state.drawn[i];
   els.detail.classList.remove("hidden");
   const common=c.reversed?["mất cân bằng","trì trệ","cần điều chỉnh"]:["phát triển","hành động","cân bằng","nhận thức"];
-  els.detail.innerHTML='<div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p>Từ khóa tham khảo: '+common.join(" · ")+'</p>';
+  els.detail.innerHTML='<div class="detail-card"><img src="'+cardImage(c)+'" alt="'+c.name+'" class="detail-art" onerror="this.style.display=\'none\'"><div><div class="detail-kicker">LÁ '+(i+1)+' · '+c.position+'</div><h3>'+c.label+'</h3><p class="detail-name">'+c.name+' · '+(c.reversed?"Ngược":"Xuôi")+'</p><p>Từ khóa tham khảo: '+common.join(" · ")+'</p></div></div>';
 }
 function makeSummary(){
   const spread=spreads.find(s=>s.id===state.spreadId);
