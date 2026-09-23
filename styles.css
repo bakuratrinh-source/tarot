@@ -367,3 +367,20 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
   .carousel-prev{left:7px}.carousel-next{right:7px}
   .drag-hint{bottom:28px;font-size:7px}
 }
+
+/* Final interaction fix: card buttons must remain clickable */
+.shuffle-stage.ritual-ready .deck-fan,
+.shuffle-stage.ritual-ready .ritual-card{
+  pointer-events:auto;
+}
+.shuffle-stage .ritual-card{
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  touch-action:pan-x;
+}
+.shuffle-stage .ritual-card:disabled{
+  cursor:default;
+}
+.shuffle-stage .ritual-card.pressing{
+  filter:brightness(1.18);
+}
