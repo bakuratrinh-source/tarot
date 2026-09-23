@@ -678,3 +678,31 @@ body{
 .draw-question button{
   border-color:rgba(182,104,240,.65);
 }
+
+
+/* ===== GENERATED ARTWORK BACKGROUND ===== */
+.shuffle-stage .ritual-scene{
+  display:none;
+}
+.shuffle-stage .ritual-table{
+  background:
+    linear-gradient(180deg,rgba(8,3,18,.10),rgba(6,2,14,.24)),
+    url("./assets/tarot-room.webp") center center / cover no-repeat;
+  background-blend-mode:normal;
+}
+.shuffle-stage .ritual-table:before{
+  background:radial-gradient(ellipse at center,transparent 0 34%,rgba(8,3,18,.12) 72%,rgba(4,2,9,.45) 100%);
+  border-color:rgba(205,128,255,.34);
+}
+.shuffle-stage .ritual-table:after{
+  color:rgba(244,196,107,.42);
+  text-shadow:0 0 18px rgba(181,90,255,.55);
+}
+.shuffle-stage .ritual-stars{
+  background:
+    radial-gradient(circle at 18% 28%,#ffd986 0 1px,transparent 2px),
+    radial-gradient(circle at 31% 44%,#d09cff 0 1px,transparent 2px),
+    radial-gradient(circle at 72% 25%,#fff 0 1px,transparent 2px),
+    radial-gradient(circle at 84% 58%,#d69cff 0 1px,transparent 2px);
+  opacity:.45;
+}
