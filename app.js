@@ -57,7 +57,8 @@ function renderReading(){
   els.readingSection.classList.remove("hidden");
   els.summaryPanel.classList.remove("hidden");
   els.readingMeta.textContent=spread.name+" · "+state.drawn.length+" lá";
-  els.cardsGrid.innerHTML=state.drawn.map((card,i)=>'<article class="tarot-card"><div class="card-face '+(card.reversed?"reversed":"")+'"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+card.arcana+'</small><strong>'+card.label+'</strong><em>'+ (card.reversed?"Ngược":"Xuôi") +'</em></div><div class="card-info"><span>'+card.position+'</span><strong>'+card.name+(card.reversed?" · Reversed":"")+'</strong></div></article>').join("");
+  els.cardsGrid.innerHTML=state.drawn.map((card,i)=>'<article class="tarot-card"><div class="card-flip" data-reveal="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face '+(card.reversed?"reversed":"")+'"><span class="card-index">0'+(i+1)+'</span><div class="card-symbol">✦</div><small>'+card.arcana+'</small><strong>'+card.label+'</strong><em>'+ (card.reversed?"Ngược":"Xuôi") +'</em></div></div></div><div class="card-info"><span>'+card.position+'</span><strong>'+card.name+(card.reversed?" · Reversed":"")+'</strong></div></article>').join("");
+  els.cardsGrid.querySelectorAll("[data-reveal]").forEach(el=>el.addEventListener("click",()=>{el.classList.add("revealed"); state.drawn[Number(el.dataset.reveal)].revealed=true;}));
   els.summaryText.textContent=buildSummary();
   els.readingSection.scrollIntoView({behavior:"smooth",block:"start"});
 }
