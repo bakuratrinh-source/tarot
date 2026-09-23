@@ -37,3 +37,6 @@
 .detail-card{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center}
 .detail-art{width:120px;aspect-ratio:2/3;object-fit:cover;border-radius:10px;border:1px solid rgba(216,180,254,.18)}
 @media(max-width:600px){.detail-card{grid-template-columns:90px 1fr}.detail-art{width:90px}}
+
+/* Reading details */
+.card-info small{display:block;margin-top:7px;color:#9f94aa;font-size:11px;line-height:1.5}.meaning-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.meaning-grid>div{padding:12px;border:1px solid rgba(216,180,254,.1);border-radius:12px;background:#100c17}.meaning-grid b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#a997b9;margin-bottom:5px}.meaning-grid span{display:block;color:#c8bdcf;line-height:1.55;font-size:13px}.summary-panel{display:block}.summary-panel pre{max-height:520px;overflow:auto}.tarot-art{background:#20132d}@media(max-width:600px){.meaning-grid{grid-template-columns:1fr}}
