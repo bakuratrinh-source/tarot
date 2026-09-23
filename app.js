@@ -191,12 +191,14 @@ function renderReading(){
   els.cards.innerHTML=state.drawn.map((c,i)=>{
     const info=getCardInfo(c);
     const src=cardImage(c);
-    return '<article class="tarot-card"><div class="card-flip revealed '+(c.reversed?"is-reversed":"")+'" data-i="'+i+'" aria-label="Xem chi tiết '+c.label+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><img class="tarot-art" src="'+src+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" loading="lazy" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'}"><div class="card-symbol fallback-symbol">✦</div></div></div></div><div class="card-info"><span>'+c.position+' · '+(c.reversed?"NGƯỢC":"XUÔI")+'</span><strong>'+c.label+' — '+c.name+'</strong><small>'+info.keywords+'</small></div></article>';
+    return '<article class="tarot-card"><div class="card-flip '+(c.reversed?"is-reversed":"")+'" data-i="'+i+'" aria-label="Mở lá '+c.label+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><img class="tarot-art" src="'+src+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" loading="lazy" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'}"><div class="card-symbol fallback-symbol">✦</div></div></div></div><div class="card-info"><span>'+c.position+' · '+(c.reversed?"NGƯỢC":"XUÔI")+'</span><strong>'+c.label+' — '+c.name+'</strong><small>'+info.keywords+'</small></div></article>';
   }).join("");
   els.cards.querySelectorAll(".card-flip").forEach(el=>el.onclick=()=>{
     const i=Number(el.dataset.i);
-    state.drawn[i].revealed=true;
-    showDetail(i);
+    state.drawn[i].revealed=!state.drawn[i].revealed;
+    el.classList.toggle("revealed",state.drawn[i].revealed);
+    el.setAttribute("aria-label",state.drawn[i].revealed?"Xem chi tiết "+state.drawn[i].label:"Mở lá "+state.drawn[i].label);
+    if(state.drawn[i].revealed) showDetail(i);
   });
   renderAllDetails();
   els.summary.textContent=makeSummary();
