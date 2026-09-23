@@ -1,0 +1,17 @@
+name: QA
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate core files
+        run: |
+          test -f index.html
+          test -f app.js
+          test -f cards.js
+          test -f styles.css
+          grep -q "Tarot" index.html
