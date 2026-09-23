@@ -43,7 +43,14 @@ function buildShuffleTable(pool,spread,animate=true){
   if(prompt)prompt.textContent="Đang xáo bài...";
   if(msg)msg.textContent="Đang chuẩn bị bộ bài...";
   els.fan.classList.remove("spread-ready");
-  els.fan.innerHTML=pool.map((_,i)=>'<button class="fan-card ritual-card" data-i="'+i+'" type="button" aria-label="Lá bài '+(i+1)+'"></button>').join("");
+  els.fan.innerHTML=pool.map((_,i)=>{
+    const center=(pool.length-1)/2;
+    const spreadX=Math.round((i-center)*14);
+    const shuffleX=Math.round((i%2===0?-1:1)*(45+Math.abs(i-center)*5));
+    const shuffleR=(i%2===0?-1:1)*(5+(i%7));
+    const delay=(i%13)*0.018;
+    return '<button class="fan-card ritual-card" data-i="'+i+'" style="--i:'+i+';--spread-x:'+spreadX+'px;--shuffle-x:'+shuffleX+'px;--shuffle-r:'+shuffleR+'deg;--delay:'+delay+'s" type="button" aria-label="Lá bài '+(i+1)+'"></button>';
+  }).join("");
   els.fan.querySelectorAll(".fan-card").forEach((b,i)=>b.onclick=()=>pickCard(b,activePool[i],spread));
   const stage=$("#shuffleStage");
   stage?.classList.remove("ritual-ready");
@@ -74,7 +81,7 @@ function startSelection(){
   els.drawTable.classList.remove("hidden");
   els.reading.classList.add("hidden");
   updateDrawContext(spread);
-  const pool=shuffle(deck).slice(0,30);
+  const pool=shuffle(deck).slice(0,78);
   buildShuffleTable(pool,spread,true);
   els.drawTable.scrollIntoView({behavior:"smooth",block:"start"});
 }
@@ -293,7 +300,7 @@ function reshuffleCards(){
   if(!activePool.length)return;
   const spread=spreads.find(s=>s.id===state.spreadId);
   state.drawn=[];
-  buildShuffleTable(shuffle(deck).slice(0,30),spread,true);
+  buildShuffleTable(shuffle(deck).slice(0,78),spread,true);
 }
 function randomPick(){
   if(!$("#shuffleStage")?.classList.contains("ritual-ready"))return;
