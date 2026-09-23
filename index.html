@@ -18,11 +18,11 @@
     <div class="brand-symbol">✦</div><strong>ARCANA</strong><small>TAROT READING</small>
   </div>
   <nav>
-    <a class="nav-item active"><span>✧</span>Trải Bài Mới</a>
-    <a class="nav-item"><span>◷</span>Lịch Sử</a>
-    <a class="nav-item"><span>◇</span>Bộ Bài</a>
-    <a class="nav-item"><span>?</span>Hướng Dẫn</a>
-    <a class="nav-item"><span>⚙</span>Cài Đặt</a>
+    <button class="nav-item active" data-nav="new" type="button"><span>✧</span>Trải Bài Mới</button>
+    <button class="nav-item" data-nav="history" type="button"><span>◷</span>Lịch Sử</button>
+    <button class="nav-item" data-nav="deck" type="button"><span>◇</span>Bộ Bài</button>
+    <button class="nav-item" data-nav="guide" type="button"><span>?</span>Hướng Dẫn</button>
+    <button class="nav-item" data-nav="settings" type="button"><span>⚙</span>Cài Đặt</button>
   </nav>
   <div class="sidebar-quote">
     <div>☾</div>
@@ -104,6 +104,15 @@
   <div id="detailPanel" class="detail-panel hidden"></div>
 </section>
 
+<div id="arcanaModal" class="arcana-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button class="modal-close" type="button" data-close-modal>×</button>
+    <div class="eyebrow">ARCANA</div>
+    <h2 id="modalTitle">Lịch sử trải bài</h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
 <footer>ARCANA · Tarot như công cụ chiêm nghiệm và tham khảo.</footer>
 </section>
 </main>
