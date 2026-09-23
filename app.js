@@ -86,6 +86,6 @@ function buildSummary(payload){
 }
 
 els.drawBtn.addEventListener("click",drawCards);
-els.resetBtn.addEventListener("click",()=>{state.question="";state.drawn=[];els.questionInput.value="";els.readingSection.classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});});
-els.copyBtn2.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.summaryText.textContent);els.copyBtn.textContent="Đã copy ✓";setTimeout(()=>els.copyBtn.textContent="Copy nội dung",1300);});
+els.resetBtn.addEventListener("click",()=>{state.question="";state.drawn=[];els.questionInput.value="";els.readingSection.classList.add("hidden");els.drawTable.classList.add("hidden");els.detailPanel.classList.add("hidden");els.selectionStatus.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"});});
+els.copyBtn.addEventListener("click",async()=>{await navigator.clipboard.writeText(els.summaryText.textContent);els.copyBtn.textContent="Đã copy ✓";setTimeout(()=>els.copyBtn.textContent="Copy nội dung",1300);});
 renderDecks(); renderSpreads();
