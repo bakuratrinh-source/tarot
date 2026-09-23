@@ -6,7 +6,7 @@ const $ = (s) => document.querySelector(s);
 const els = {
   deckGrid:$("#deckGrid"), spreadGrid:$("#spreadGrid"), questionInput:$("#questionInput"),
   drawBtn:$("#drawBtn"), resetBtn:$("#resetBtn"), readingSection:$("#readingSection"),
-  cardsGrid:$("#cardsGrid"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
+  cardsGrid:$("#cardsGrid"), drawTable:$("#drawTable"), deckFan:$("#deckFan"), selectionStatus:$("#selectionStatus"), summaryPanel:$("#summaryPanel"), summaryText:$("#summaryText"),
   readingMeta:$("#readingMeta"), copyBtn:$("#copyBtn")
 };
 
@@ -37,8 +37,10 @@ function showDrawTable(){
       if(state.drawn.length>=spread.positions.length)return;
       const card=pool[i];
       const meta=tarotCards.find(x=>x.name===card.name) || minorArcanaMetadata.find(x=>x.rank===card.name.split(" ")[0] && x.suit===card.suit);
-      state.drawn.push({...card,...(meta||{}),position:spread.positions[state.drawn.length],reversed:Math.random()<0.35});
+      state.drawn.push({...card,...(meta||{}),position:spread.positions[state.drawn.length],reversed:Math.random()<0.35,revealed:false});
       btn.classList.add("selected");
+      btn.disabled=true;
+      els.selectionStatus.textContent=state.drawn.length+" / "+spread.positions.length+" · "+spread.positions[state.drawn.length-1];
       if(state.drawn.length===spread.positions.length) renderReading();
     });
   });
