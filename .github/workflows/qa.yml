@@ -15,3 +15,5 @@ jobs:
           test -f cards.js
           test -f styles.css
           grep -q "Tarot" index.html
+      - name: Syntax check
+        run: node --check app.js
