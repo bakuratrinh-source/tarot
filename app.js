@@ -52,10 +52,13 @@ function buildShuffleTable(pool,spread,animate=true){
     return '<button class="fan-card ritual-card" data-i="'+i+'" style="--i:'+i+';--spread-x:'+spreadX+'px;--shuffle-x:'+shuffleX+'px;--shuffle-r:'+shuffleR+'deg;--delay:'+delay+'s" type="button" aria-label="Lá bài '+(i+1)+'"></button>';
   }).join("");
   els.fan.querySelectorAll(".fan-card").forEach((b,i)=>{
-    b.addEventListener("click",e=>{
+    // Use pointerup as the primary selection event. This avoids the
+    // click event being swallowed by the horizontal-drag carousel.
+    b.addEventListener("pointerup",e=>{
       e.preventDefault();
       e.stopPropagation();
       if(b.disabled)return;
+      if(window.__arcanaCardDragMoved){window.__arcanaCardDragMoved=false;return;}
       const selectedCard=activePool[i];
       if(!selectedCard)return;
       pickCard(b,selectedCard,spread);
@@ -357,11 +360,13 @@ function setupCardCarousel(){
   next?.addEventListener("click",()=>fan.scrollBy({left:step,behavior:"smooth"}));
 
   let dragging=false,startX=0,startScroll=0,moved=false;
+  window.__arcanaCardDragMoved=false;
 
   fan.addEventListener("pointerdown",e=>{
     if(!$("#shuffleStage")?.classList.contains("ritual-ready"))return;
     dragging=true;
     moved=false;
+    window.__arcanaCardDragMoved=false;
     startX=e.clientX;
     startScroll=fan.scrollLeft;
     fan.classList.add("is-dragging");
@@ -370,7 +375,10 @@ function setupCardCarousel(){
   fan.addEventListener("pointermove",e=>{
     if(!dragging)return;
     const dx=e.clientX-startX;
-    if(Math.abs(dx)>8)moved=true;
+    if(Math.abs(dx)>8){
+      moved=true;
+      window.__arcanaCardDragMoved=true;
+    }
     if(moved)fan.scrollLeft=startScroll-dx;
   });
 
@@ -380,18 +388,10 @@ function setupCardCarousel(){
   });
   fan.addEventListener("pointercancel",()=>{
     dragging=false;
+    moved=false;
+    window.__arcanaCardDragMoved=false;
     fan.classList.remove("is-dragging");
   });
-
-  // Never block a normal card click. Only suppress the synthetic click
-  // generated after an actual drag.
-  fan.addEventListener("click",e=>{
-    if(moved){
-      e.preventDefault();
-      e.stopPropagation();
-      moved=false;
-    }
-  },true);
 
   fan.addEventListener("wheel",e=>{
     if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
