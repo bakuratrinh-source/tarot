@@ -166,11 +166,11 @@ function cardCode(card){
 }
 function cardImage(card){
   const code=cardCode(card);
-  return "https://cdn.jsdelivr.net/gh/sixseeds/tarot-api@main/cards/"+code+".jpg";
+  return "https://raw.githubusercontent.com/sixseeds/tarot-api/main/cards/"+code+".jpg";
 }
 function cardImageFallback(card){
   const code=cardCode(card);
-  return "https://raw.githubusercontent.com/sixseeds/tarot-api/main/cards/"+code+".jpg";
+  return "https://cdn.jsdelivr.net/gh/sixseeds/tarot-api@main/cards/"+code+".jpg";
 }
 
 function renderAllDetails(){
@@ -190,11 +190,10 @@ function renderReading(){
   els.cards.innerHTML=state.drawn.map((c,i)=>{
     const info=getCardInfo(c);
     const src=cardImage(c);
-    return '<article class="tarot-card"><div class="card-flip '+(c.reversed?"is-reversed":"")+'" data-i="'+i+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><img class="tarot-art" src="'+src+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" loading="lazy" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'}"><div class="card-symbol fallback-symbol">✦</div></div></div></div><div class="card-info"><span>'+c.position+' · '+(c.reversed?"NGƯỢC":"XUÔI")+'</span><strong>'+c.label+' — '+c.name+'</strong><small>'+info.keywords+'</small></div></article>';
+    return '<article class="tarot-card"><div class="card-flip revealed '+(c.reversed?"is-reversed":"")+'" data-i="'+i+'" aria-label="Xem chi tiết '+c.label+'"><div class="card-inner"><div class="card-back">✦</div><div class="card-face"><img class="tarot-art" src="'+src+'" data-fallback="'+cardImageFallback(c)+'" alt="'+c.name+'" loading="lazy" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'}"><div class="card-symbol fallback-symbol">✦</div></div></div></div><div class="card-info"><span>'+c.position+' · '+(c.reversed?"NGƯỢC":"XUÔI")+'</span><strong>'+c.label+' — '+c.name+'</strong><small>'+info.keywords+'</small></div></article>';
   }).join("");
   els.cards.querySelectorAll(".card-flip").forEach(el=>el.onclick=()=>{
     const i=Number(el.dataset.i);
-    el.classList.add("revealed");
     state.drawn[i].revealed=true;
     showDetail(i);
   });
