@@ -22,3 +22,6 @@ MVP web app for a real-world-style Tarot reading flow.
 
 ## Development
 Run with any static web server or open index.html in a browser.
+
+## Artwork
+The MVP uses Rider–Waite–Smith metadata and selected Wikimedia Commons public-domain references. Review jurisdiction-specific rights before commercial distribution.\n
