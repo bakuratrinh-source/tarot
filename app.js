@@ -27,6 +27,45 @@ function renderSpreads(){
   els.spreadGrid.innerHTML=spreads.map(s=>'<button class="spread-card '+(s.id===state.spreadId?"selected":"")+'" data-spread="'+s.id+'" type="button"><span class="spread-number">'+s.positions.length+'</span><div><strong>'+s.name+'</strong><span>'+s.subtitle+'</span></div></button>').join("");
   els.spreadGrid.querySelectorAll("[data-spread]").forEach(b=>b.onclick=()=>{state.spreadId=b.dataset.spread;state.drawn=[];renderSpreads()});
 }
+let activePool=[];
+let shuffleTimer=null;
+function updateDrawContext(spread){
+  const q=$("#drawQuestion"), ds=$("#drawSpread"), sub=$("#drawSpreadSub");
+  if(q)q.textContent=state.question||"Câu hỏi chưa được nhập";
+  if(ds)ds.textContent=spread.name;
+  if(sub)sub.textContent=spread.subtitle;
+}
+function buildShuffleTable(pool,spread,animate=true){
+  activePool=pool;
+  els.status.textContent="0 / "+spread.positions.length;
+  const hint=$("#shuffleHint"), prompt=$("#pickPrompt"), msg=$("#selectionMessage");
+  if(hint)hint.textContent="Hãy tập trung vào câu hỏi của bạn, mình sẽ xáo bộ bài để kết nối năng lượng...";
+  if(prompt)prompt.textContent="Đang xáo bài...";
+  if(msg)msg.textContent="Đang chuẩn bị bộ bài...";
+  els.fan.classList.remove("spread-ready");
+  els.fan.innerHTML=pool.map((_,i)=>'<button class="fan-card ritual-card" data-i="'+i+'" type="button" aria-label="Lá bài '+(i+1)+'"></button>').join("");
+  els.fan.querySelectorAll(".fan-card").forEach((b,i)=>b.onclick=()=>pickCard(b,activePool[i],spread));
+  const stage=$("#shuffleStage");
+  stage?.classList.remove("ritual-ready");
+  window.requestAnimationFrame(()=>{
+    stage?.classList.add("shuffling");
+    if(!animate){
+      stage?.classList.add("ritual-ready");
+      els.fan.classList.add("spread-ready");
+      if(prompt)prompt.textContent="Chọn "+spread.positions.length+" lá bài";
+      if(msg)msg.textContent="Bộ bài đã sẵn sàng";
+      return;
+    }
+    clearTimeout(shuffleTimer);
+    shuffleTimer=setTimeout(()=>{
+      stage?.classList.remove("shuffling");
+      stage?.classList.add("ritual-ready");
+      els.fan.classList.add("spread-ready");
+      if(prompt)prompt.textContent="Hãy chọn "+spread.positions.length+" lá bài";
+      if(msg)msg.textContent="Chạm vào lá bài bạn muốn chọn";
+    },2600);
+  });
+}
 function startSelection(){
   state.question=els.question.value.trim();
   if(!state.question){els.question.focus();els.question.classList.add("error");setTimeout(()=>els.question.classList.remove("error"),800);return}
@@ -34,10 +73,9 @@ function startSelection(){
   const spread=spreads.find(s=>s.id===state.spreadId);
   els.drawTable.classList.remove("hidden");
   els.reading.classList.add("hidden");
-  els.status.textContent="0 / "+spread.positions.length;
+  updateDrawContext(spread);
   const pool=shuffle(deck).slice(0,30);
-  els.fan.innerHTML=pool.map((_,i)=>'<button class="fan-card" data-i="'+i+'" type="button" aria-label="Lá bài '+(i+1)+'"></button>').join("");
-  els.fan.querySelectorAll(".fan-card").forEach((b,i)=>b.onclick=()=>pickCard(b,pool[i],spread));
+  buildShuffleTable(pool,spread,true);
   els.drawTable.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function pickCard(button,card,spread){
@@ -251,7 +289,33 @@ async function copySummary(){
   try{await navigator.clipboard.writeText(text)}catch{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}
   els.copy.textContent="Đã copy ✓";setTimeout(()=>els.copy.textContent="Copy nội dung",1200);
 }
+function reshuffleCards(){
+  if(!activePool.length)return;
+  const spread=spreads.find(s=>s.id===state.spreadId);
+  state.drawn=[];
+  buildShuffleTable(shuffle(deck).slice(0,30),spread,true);
+}
+function randomPick(){
+  if(!$("#shuffleStage")?.classList.contains("ritual-ready"))return;
+  const spread=spreads.find(s=>s.id===state.spreadId);
+  const available=els.fan.querySelectorAll(".fan-card:not(.selected)");
+  if(!available.length)return;
+  const btn=available[Math.floor(Math.random()*available.length)];
+  const i=Number(btn.dataset.i);
+  pickCard(btn,activePool[i],spread);
+}
+function cancelSelection(){
+  clearTimeout(shuffleTimer);
+  els.drawTable.classList.add("hidden");
+  els.reading.classList.add("hidden");
+  state.drawn=[];
+}
 els.draw.onclick=startSelection;
+$("#reshuffleBtn")?.addEventListener("click",reshuffleCards);
+$("#randomPickBtn")?.addEventListener("click",randomPick);
+$("#cancelDrawBtn")?.addEventListener("click",cancelSelection);
+$("#editQuestionBtn")?.addEventListener("click",()=>{els.drawTable.classList.add("hidden");els.question.focus();window.scrollTo({top:0,behavior:"smooth"})});
+
 els.copy.onclick=copySummary;
 els.reset.onclick=()=>{state.question="";state.drawn=[];els.question.value="";els.drawTable.classList.add("hidden");els.reading.classList.add("hidden");els.detail.classList.add("hidden");els.status.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"})};
 renderDeck();renderSpreads();
