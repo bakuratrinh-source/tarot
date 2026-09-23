@@ -255,3 +255,88 @@ els.draw.onclick=startSelection;
 els.copy.onclick=copySummary;
 els.reset.onclick=()=>{state.question="";state.drawn=[];els.question.value="";els.drawTable.classList.add("hidden");els.reading.classList.add("hidden");els.detail.classList.add("hidden");els.status.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"})};
 renderDeck();renderSpreads();
+
+/* ARCANA navigation, history and settings */
+const HISTORY_KEY="arcana_tarot_history_v1";
+function getHistory(){
+  try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]")}catch{return[]}
+}
+function saveHistory(){
+  if(!state.drawn.length)return;
+  const item={
+    id:Date.now(),
+    createdAt:new Date().toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"}),
+    question:state.question,
+    spreadId:state.spreadId,
+    drawn:state.drawn
+  };
+  const history=getHistory().filter(x=>x.question!==item.question || x.spreadId!==item.spreadId);
+  history.unshift(item);
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(history.slice(0,20)));
+}
+function openModal(title,html){
+  const modal=$("#arcanaModal"), titleEl=$("#modalTitle"), body=$("#modalBody");
+  if(!modal||!titleEl||!body)return;
+  titleEl.textContent=title;body.innerHTML=html;modal.classList.remove("hidden");
+}
+function closeModal(){ $("#arcanaModal")?.classList.add("hidden") }
+function showHistory(){
+  const history=getHistory();
+  const html=history.length
+    ? '<div class="history-list">'+history.map((h,i)=>{
+      const spread=spreads.find(s=>s.id===h.spreadId);
+      return '<button class="history-item" type="button" data-history="'+i+'"><strong>'+escapeHtml(h.question||"Không có câu hỏi")+'</strong><small>'+h.createdAt+' · '+(spread?.name||"Trải bài")+' · '+h.drawn.length+' lá</small></button>';
+    }).join("")+'</div><button class="reading-actions history-clear" type="button" id="clearHistoryBtn">Xóa lịch sử</button>'
+    : '<div class="history-empty">Chưa có phiên trải bài nào được lưu.<br>Hoàn thành một phiên, lịch sử sẽ tự động xuất hiện ở đây.</div>';
+  openModal("Lịch sử trải bài",html);
+  document.querySelectorAll("[data-history]").forEach(btn=>btn.onclick=()=>{
+    const h=history[Number(btn.dataset.history)];
+    if(!h)return;
+    state.question=h.question||"";
+    state.spreadId=h.spreadId||"three";
+    state.drawn=h.drawn||[];
+    if(els.question)els.question.value=state.question;
+    renderSpreads();renderReading();closeModal();
+  });
+  $("#clearHistoryBtn")?.addEventListener("click",()=>{
+    localStorage.removeItem(HISTORY_KEY);showHistory();
+  });
+}
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
+}
+function showGuide(){
+  openModal("Hướng dẫn sử dụng",'<p><b>1. Đặt câu hỏi</b><br>Viết một câu hỏi cụ thể để phiên trải bài có trọng tâm.</p><p><b>2. Chọn kiểu trải</b><br>1 lá cho thông điệp nhanh, 3 lá cho Quá khứ · Hiện tại · Tương lai, 4 lá cho một góc nhìn chi tiết hơn.</p><p><b>3. Rút bài</b><br>Chọn các lá trong bộ bài úp. Khi đủ số lượng, kết quả sẽ được mở tự động.</p><p><b>4. Đọc kết quả</b><br>Chạm vào từng lá để lật và xem chi tiết. Bạn cũng có thể sao chép nội dung đã cấu trúc để gửi cho AI phân tích thêm.</p><p><b>Lưu ý</b><br>Tarot ở đây được dùng như công cụ chiêm nghiệm và tham khảo, không phải lời khẳng định chắc chắn về tương lai.</p>');
+}
+function showSettings(){
+  openModal("Cài đặt",'<div class="setting-row"><span>Hiệu ứng chuyển động</span><input id="motionToggle" type="checkbox" '+(localStorage.getItem("arcana_motion")!=="off"?"checked":"")+'></div><div class="setting-row"><span>Hiện câu hỏi mẫu</span><input id="placeholderToggle" type="checkbox" '+(localStorage.getItem("arcana_placeholder")==="off"?"":"checked")+'></div><div class="setting-row"><span>Xóa toàn bộ lịch sử trải bài</span><button id="deleteAllHistory" class="save-btn" type="button">Xóa lịch sử</button></div>');
+  $("#motionToggle")?.addEventListener("change",e=>{
+    localStorage.setItem("arcana_motion",e.target.checked?"on":"off");
+    document.documentElement.classList.toggle("reduce-motion",!e.target.checked);
+  });
+  $("#placeholderToggle")?.addEventListener("change",e=>localStorage.setItem("arcana_placeholder",e.target.checked?"on":"off"));
+  $("#deleteAllHistory")?.addEventListener("click",()=>{localStorage.removeItem(HISTORY_KEY);closeModal();});
+}
+function bindNavigation(){
+  document.querySelectorAll("[data-nav]").forEach(btn=>btn.addEventListener("click",()=>{
+    document.querySelectorAll("[data-nav]").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    const nav=btn.dataset.nav;
+    if(nav==="new"){
+      closeModal();window.scrollTo({top:0,behavior:"smooth"});
+    }else if(nav==="deck"){
+      closeModal();$("#deckGrid")?.scrollIntoView({behavior:"smooth",block:"center"});
+    }else if(nav==="history")showHistory();
+    else if(nav==="guide")showGuide();
+    else if(nav==="settings")showSettings();
+  }));
+  document.querySelectorAll("[data-close-modal]").forEach(x=>x.addEventListener("click",closeModal));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+}
+const originalRenderReading=renderReading;
+renderReading=function(){
+  originalRenderReading();
+  saveHistory();
+};
+if(localStorage.getItem("arcana_motion")==="off")document.documentElement.classList.add("reduce-motion");
+bindNavigation();
