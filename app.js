@@ -1,5 +1,5 @@
 import { standardDeck, decks, spreads } from "./cards.js";
-import { tarotCards } from "./tarot-data.js";
+import { tarotCards, minorArcanaMetadata } from "./tarot-data.js";
 
 const state = { deckId:decks[0].id, spreadId:spreads[1].id, question:"", drawn:[] };
 const $ = (s) => document.querySelector(s);
@@ -30,7 +30,7 @@ function drawCards(){
   state.question=els.questionInput.value.trim();
   if(!state.question){ els.questionInput.focus(); els.questionInput.classList.add("error"); setTimeout(()=>els.questionInput.classList.remove("error"),900); return; }
   const spread=spreads.find(x=>x.id===state.spreadId);
-  state.drawn=shuffle(standardDeck).slice(0,spread.positions.length).map((card,index)=>{ const meta=tarotCards.find(x=>x.name===card.name); return {...card,...(meta||{}),position:spread.positions[index],reversed:Math.random()<0.35}; });
+  state.drawn=shuffle(standardDeck).slice(0,spread.positions.length).map((card,index)=>{ const meta=tarotCards.find(x=>x.name===card.name) || minorArcanaMetadata.find(x=>x.rank===card.name.split(" ")[0] && x.suit===card.suit); return {...card,...(meta||{}),position:spread.positions[index],reversed:Math.random()<0.35}; });
   renderReading();
 }
 
