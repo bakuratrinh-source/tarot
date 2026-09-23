@@ -70,7 +70,7 @@ function buildShuffleTable(pool,spread,animate=true){
       els.fan.classList.add("spread-ready");
       if(prompt)prompt.textContent="Hãy chọn "+spread.positions.length+" lá bài";
       if(msg)msg.textContent="Chạm vào lá bài bạn muốn chọn";
-    },2600);
+    },4200);
   });
 }
 function startSelection(){
@@ -322,6 +322,65 @@ $("#reshuffleBtn")?.addEventListener("click",reshuffleCards);
 $("#randomPickBtn")?.addEventListener("click",randomPick);
 $("#cancelDrawBtn")?.addEventListener("click",cancelSelection);
 $("#editQuestionBtn")?.addEventListener("click",()=>{els.drawTable.classList.add("hidden");els.question.focus();window.scrollTo({top:0,behavior:"smooth"})});
+
+/* Smooth 78-card carousel controls */
+let shuffleProgressTimer=null;
+function setShuffleProgress(value){
+  const bar=$("#shuffleProgressBar");
+  if(bar)bar.style.width=Math.max(0,Math.min(100,value))+"%";
+}
+function beginShuffleProgress(){
+  clearInterval(shuffleProgressTimer);
+  setShuffleProgress(0);
+  const started=performance.now(), duration=4200;
+  shuffleProgressTimer=setInterval(()=>{
+    const p=Math.min(100,((performance.now()-started)/duration)*100);
+    setShuffleProgress(p);
+    if(p>=100){clearInterval(shuffleProgressTimer);shuffleProgressTimer=null;}
+  },40);
+}
+function setupCardCarousel(){
+  const fan=$("#deckFan");
+  const prev=$("#carouselPrev"), next=$("#carouselNext");
+  if(!fan)return;
+  const step=420;
+  prev?.addEventListener("click",()=>fan.scrollBy({left:-step,behavior:"smooth"}));
+  next?.addEventListener("click",()=>fan.scrollBy({left:step,behavior:"smooth"}));
+  let dragging=false,startX=0,startScroll=0,moved=false;
+  fan.addEventListener("pointerdown",e=>{
+    if(!$("#shuffleStage")?.classList.contains("ritual-ready"))return;
+    dragging=true;moved=false;startX=e.clientX;startScroll=fan.scrollLeft;
+    fan.classList.add("is-dragging");fan.setPointerCapture?.(e.pointerId);
+  });
+  fan.addEventListener("pointermove",e=>{
+    if(!dragging)return;
+    const dx=e.clientX-startX;
+    if(Math.abs(dx)>5)moved=true;
+    fan.scrollLeft=startScroll-dx;
+  });
+  const endDrag=e=>{
+    if(!dragging)return;
+    dragging=false;fan.classList.remove("is-dragging");
+    try{fan.releasePointerCapture?.(e.pointerId)}catch{}
+  };
+  fan.addEventListener("pointerup",endDrag);
+  fan.addEventListener("pointercancel",endDrag);
+  fan.addEventListener("click",e=>{
+    if(moved){e.preventDefault();e.stopPropagation();moved=false;}
+  },true);
+  fan.addEventListener("wheel",e=>{
+    if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
+      e.preventDefault();fan.scrollLeft+=e.deltaY;
+    }
+  },{passive:false});
+}
+const originalBuildShuffleTable=buildShuffleTable;
+buildShuffleTable=function(pool,spread,animate=true){
+  originalBuildShuffleTable(pool,spread,animate);
+  if(animate)beginShuffleProgress(); else setShuffleProgress(100);
+};
+setupCardCarousel();
+
 
 els.copy.onclick=copySummary;
 els.reset.onclick=()=>{state.question="";state.drawn=[];els.question.value="";els.drawTable.classList.add("hidden");els.reading.classList.add("hidden");els.detail.classList.add("hidden");els.status.textContent="0 lá đã chọn";window.scrollTo({top:0,behavior:"smooth"})};
