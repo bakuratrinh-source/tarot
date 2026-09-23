@@ -384,3 +384,13 @@ radial-gradient(circle at 50% 50%,#5d2d83,#1c0b2d 62%);box-shadow:0 9px 24px #00
 .shuffle-stage .ritual-card.pressing{
   filter:brightness(1.18);
 }
+
+/* Card hit-area: decorative layers must never steal the click. */
+.shuffle-stage .ritual-card::before,
+.shuffle-stage .ritual-card::after{
+  pointer-events:none;
+}
+.shuffle-stage .ritual-card{
+  position:relative;
+  z-index:calc(100 + var(--i));
+}
